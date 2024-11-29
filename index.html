@@ -22,40 +22,19 @@
       font-weight: bold;
     }
     input[type="text"], 
-    input[type="date"], 
-    select {
+    input[type="date"] {
       width: 100%;
       padding: 10px;
+      margin-bottom: 15px;
       border: 1px solid #ddd;
       border-radius: 5px;
       font-size: 14px;
-    }
-    input[type="number"] {
-      width: 80%; /* Narrower width for table inputs */
-      padding: 5px;
-      border: 1px solid #ddd;
-      border-radius: 3px;
-      font-size: 12px;
-    }
-    .form-container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .section-title {
-      font-size: 18px;
-      color: #34495e;
-      border-bottom: 2px solid #ddd;
-      margin: 30px 0 10px;
-      padding-bottom: 5px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
+      background-color: #fff;
     }
     th, td {
       border: 1px solid #ddd;
@@ -66,26 +45,22 @@
     th {
       background-color: #eaf2f8;
       color: #2c3e50;
+      font-weight: bold;
+      text-align: center;
     }
-    .row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
+    td input[type="number"] {
+      width: 80px; /* Narrow width for better alignment */
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      font-size: 12px;
     }
-    .row > div {
-      flex: 1;
-    }
-    .small-field {
-      width: auto;
-      flex: 0 0 150px; /* Limits fields to smaller sizes for specific sections */
-    }
-    .form-footer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .form-footer > div {
-      flex: 1 1 200px; /* Ensures footer inputs occupy smaller, consistent spaces */
+    .section-title {
+      font-size: 18px;
+      color: #34495e;
+      border-bottom: 2px solid #ddd;
+      margin: 30px 0 10px;
+      padding-bottom: 5px;
     }
     button {
       padding: 10px 20px;
@@ -100,6 +75,14 @@
     button:hover {
       background-color: #2980b9;
     }
+    .form-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
 <body>
@@ -107,34 +90,6 @@
     <h1>Red Star Gas Station Report</h1>
 
     <form id="gasStationForm">
-      <!-- Header Section -->
-      <div class="row">
-        <div>
-          <label for="cashierName">Cashier Name:</label>
-          <input type="text" id="cashierName" name="cashierName" required>
-        </div>
-        <div>
-          <label for="crewName">Crew Name:</label>
-          <input type="text" id="crewName" name="crewName" required>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="small-field">
-          <label for="shiftTime">Shift (Time):</label>
-          <select id="shiftTime" name="shiftTime" required>
-            <option value="" disabled selected>Select Shift</option>
-            <option value="06:00am to 15:00pm">06:00am to 15:00pm</option>
-            <option value="02:00pm to 22:00pm">02:00pm to 22:00pm</option>
-            <option value="21:00pm to 06:00am">21:00pm to 06:00am</option>
-          </select>
-        </div>
-        <div>
-          <label for="reportDate">Date:</label>
-          <input type="date" id="reportDate" name="reportDate" required>
-        </div>
-      </div>
-
       <!-- Pump Data -->
       <div class="section-title">Electronic Reading</div>
       <table>
@@ -176,39 +131,8 @@
           </tr>
         </tbody>
       </table>
-
-      <!-- Safe Drop -->
-      <div class="section-title">Safe Drop</div>
-      <div class="row">
-        <div>
-          <label for="safeDropBills">Bills:</label>
-          <input type="number" id="safeDropBills" name="safeDropBills">
-        </div>
-        <div>
-          <label for="safeDropCoins">Coins:</label>
-          <input type="number" id="safeDropCoins" name="safeDropCoins">
-        </div>
-        <div>
-          <label for="totalCash">Total Cash:</label>
-          <input type="number" id="totalCash" name="totalCash">
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="form-footer">
-        <div>
-          <label for="cashierSignature">Cashier Signature:</label>
-          <input type="text" id="cashierSignature" name="cashierSignature">
-        </div>
-        <div>
-          <label for="crewSignature">Crew Signature:</label>
-          <input type="text" id="crewSignature" name="crewSignature">
-        </div>
-      </div>
-
-      <div style="margin-top: 20px; text-align: center;">
-        <button type="submit">Submit</button>
-      </div>
+      
+      <button type="submit">Submit</button>
     </form>
   </div>
 </body>
