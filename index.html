@@ -96,18 +96,33 @@
     <h1>Red Star Gas Station Report</h1>
 
     <form id="gasStationForm">
-      <!-- Header -->
-      <div>
-        <label for="cashierName">Cashier/Crew Name:</label>
-        <input type="text" id="cashierName" name="cashierName" required>
-
-        <label for="shiftTime">Shift (Time):</label>
-        <input type="text" id="shiftTime" name="shiftTime" required>
-
-        <label for="reportDate">Date:</label>
-        <input type="date" id="reportDate" name="reportDate" required>
+      <!-- Header Section -->
+      <div class="row">
+        <div>
+          <label for="cashierName">Cashier Name:</label>
+          <input type="text" id="cashierName" name="cashierName" required>
+        </div>
+        <div>
+          <label for="crewName">Crew Name:</label>
+          <input type="text" id="crewName" name="crewName" required>
+        </div>
       </div>
 
+      <div class="row">
+        <div class="small-field">
+          <label for="shiftTime">Shift (Time):</label>
+          <select id="shiftTime" name="shiftTime" required>
+            <option value="" disabled selected>Select Shift</option>
+            <option value="06:00am to 15:00pm">06:00am to 15:00pm</option>
+            <option value="14:00pm to 22:00pm">02:00pm to 22:00pm</option>
+            <option value="21:00pm to 06:00am">21:00pm to 06:00am</option>
+          </select>
+        </div>
+        <div>
+          <label for="reportDate">Date:</label>
+          <input type="date" id="reportDate" name="reportDate" required>
+        </div>
+      </div>
       <!-- Pump Data -->
       <div class="section-title">Electronic Reading</div>
       <table>
