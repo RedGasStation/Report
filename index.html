@@ -96,18 +96,20 @@
     <h1>Red Star Gas Station Report</h1>
 
     <form id="gasStationForm">
-      <!-- Header Section -->
-      <div class="row">
-        <div>
-          <label for="cashierName">Cashier Name:</label>
-          <input type="text" id="cashierName" name="cashierName" required>
-        </div>
-        <div>
-          <label for="crewName">Crew Name:</label>
-          <input type="text" id="crewName" name="crewName" required>
-        </div>
-      </div>
-      <!-- Shift Time and Date Report -->
+
+<!-- Header Section -->
+<div class="row" style="display: flex; gap: 10px;">
+  <div style="flex: 1;">
+    <label for="cashierName">Cashier Name:</label>
+    <input type="text" id="cashierName" name="cashierName" required>
+  </div>
+  <div style="flex: 1;">
+    <label for="crewName">Crew Name:</label>
+    <input type="text" id="crewName" name="crewName" required>
+  </div>
+</div>
+    
+<!-- Shift Time and Date Report -->
 <div class="row" style="display: flex; align-items: flex-start; gap: 10px; flex-wrap: nowrap;">
   <div style="flex: 1; max-width: 200px;">
     <label for="shiftTime">Shift (Time):</label>
