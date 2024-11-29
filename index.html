@@ -22,35 +22,13 @@
       font-weight: bold;
     }
     input[type="text"], 
-    input[type="number"], 
-    input[type="date"], 
-    button {
+    input[type="date"] {
       width: 100%;
       padding: 10px;
       margin-bottom: 15px;
       border: 1px solid #ddd;
       border-radius: 5px;
       font-size: 14px;
-    }
-    input[type="number"] {
-      width: 95%; /* Ensure table inputs fit better */
-    }
-    button {
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background-color: #2980b9;
-    }
-    .section-title {
-      font-size: 18px;
-      color: #34495e;
-      border-bottom: 2px solid #ddd;
-      margin: 30px 0 10px;
-      padding-bottom: 5px;
     }
     table {
       width: 100%;
@@ -60,31 +38,42 @@
     }
     th, td {
       border: 1px solid #ddd;
-      padding: 10px;
+      padding: 8px;
       text-align: left;
       font-size: 14px;
     }
     th {
-      background-color: #f4f4f4;
+      background-color: #eaf2f8;
+      color: #2c3e50;
       font-weight: bold;
       text-align: center;
     }
-    td input {
-      margin: 0;
+    td input[type="number"] {
+      width: 80px; /* Narrow width for better alignment */
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      font-size: 12px;
     }
-    .form-footer {
-      margin-top: 20px;
+    .section-title {
+      font-size: 18px;
+      color: #34495e;
+      border-bottom: 2px solid #ddd;
+      margin: 30px 0 10px;
+      padding-bottom: 5px;
     }
-    .form-footer h4 {
-      margin-bottom: 15px;
-      color: #2c3e50;
-    }
-    .form-footer input {
-      width: calc(100% - 20px);
-    }
-    .form-footer button {
-      width: auto;
+    button {
       padding: 10px 20px;
+      border: none;
+      background-color: #3498db;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
     }
     .form-container {
       max-width: 900px;
@@ -101,18 +90,6 @@
     <h1>Red Star Gas Station Report</h1>
 
     <form id="gasStationForm">
-      <!-- Header -->
-      <div>
-        <label for="cashierName">Cashier/Crew Name:</label>
-        <input type="text" id="cashierName" name="cashierName" required>
-
-        <label for="shiftTime">Shift (Time):</label>
-        <input type="text" id="shiftTime" name="shiftTime" required>
-
-        <label for="reportDate">Date:</label>
-        <input type="date" id="reportDate" name="reportDate" required>
-      </div>
-
       <!-- Pump Data -->
       <div class="section-title">Electronic Reading</div>
       <table>
@@ -154,65 +131,8 @@
           </tr>
         </tbody>
       </table>
-
-      <!-- Dipstick Data -->
-      <div class="section-title">Dipstick</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Opening</th>
-            <th>Delivery</th>
-            <th>Closing</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Premium</td>
-            <td><input type="number" name="premiumOpening"></td>
-            <td><input type="number" name="premiumDelivery"></td>
-            <td><input type="number" name="premiumClosing"></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Safe Drop -->
-      <div class="section-title">Safe Drop</div>
-      <div>
-        <label for="safeDropBills">Bills:</label>
-        <input type="number" id="safeDropBills" name="safeDropBills">
-
-        <label for="safeDropCoins">Coins:</label>
-        <input type="number" id="safeDropCoins" name="safeDropCoins">
-
-        <label for="totalCash">Total Cash:</label>
-        <input type="number" id="totalCash" name="totalCash">
-      </div>
-
-      <!-- Summary -->
-      <div class="section-title">Summary</div>
-      <div>
-        <label for="fuelSales">Fuel Sales:</label>
-        <input type="number" id="fuelSales" name="fuelSales">
-
-        <label for="totalExpenses">Total Expenses:</label>
-        <input type="number" id="totalExpenses" name="totalExpenses">
-
-        <label for="netSales">Net Sales:</label>
-        <input type="number" id="netSales" name="netSales">
-      </div>
-
-      <!-- Footer -->
-      <div class="form-footer">
-        <h4>Signatures</h4>
-        <label for="cashierSignature">Cashier:</label>
-        <input type="text" id="cashierSignature" name="cashierSignature">
-
-        <label for="crewSignature">Crew:</label>
-        <input type="text" id="crewSignature" name="crewSignature">
-
-        <button type="submit">Submit</button>
-      </div>
+      
+      <button type="submit">Submit</button>
     </form>
   </div>
 </body>
