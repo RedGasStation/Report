@@ -97,28 +97,61 @@
     <form id="gasStationForm">
       
 <!-- Header Section -->
-<div class="row" style="display: flex; gap: 20px; margin-bottom: 15px;">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 20px;">
+  <!-- Left Section: Station Details -->
   <div style="flex: 1;">
-    <label for="cashierName" style="font-weight: bold; margin-bottom: 5px; display: inline-block;">Cashier Name:</label>
-    <input 
-      type="text" 
-      id="cashierName" 
-      name="cashierName" 
-      required 
-      style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+    <h2 style="margin: 0; font-size: 18px; color: #34495e;">RED STAR GAS STATION</h2>
+    <p style="margin: 5px 0; font-size: 14px; color: #555;">BRGY PEMIENTA UMINGAN PANGASINAN</p>
+    <p style="margin: 5px 0; font-size: 14px; color: #555;">CFI NO 0922875-1312</p>
   </div>
+
+  <!-- Right Section: Form Fields -->
   <div style="flex: 1;">
-    <label for="crewName" style="font-weight: bold; margin-bottom: 5px; display: inline-block;">Crew Name:</label>
-    <input 
-      type="text" 
-      id="crewName" 
-      name="crewName" 
-      required 
-      style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div>
+        <label for="crewName" style="font-weight: bold; margin-bottom: 5px; display: block;">Crew Name:</label>
+        <input 
+          type="text" 
+          id="crewName" 
+          name="crewName" 
+          required 
+          style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+      </div>
+      <div>
+        <label for="cashierName" style="font-weight: bold; margin-bottom: 5px; display: block;">Cashier:</label>
+        <input 
+          type="text" 
+          id="cashierName" 
+          name="cashierName" 
+          required 
+          style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+      </div>
+      <div>
+        <label for="shiftTime" style="font-weight: bold; margin-bottom: 5px; display: block;">Shift (Time):</label>
+        <select 
+          id="shiftTime" 
+          name="shiftTime" 
+          required 
+          style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+          <option value="" disabled selected>Select Shift</option>
+          <option value="06:00am to 15:00pm">06:00am to 15:00pm</option>
+          <option value="14:00pm to 22:00pm">14:00pm to 22:00pm</option>
+          <option value="21:00pm to 06:00am">21:00pm to 06:00am</option>
+        </select>
+      </div>
+      <div>
+        <label for="reportDate" style="font-weight: bold; margin-bottom: 5px; display: block;">Date:</label>
+        <input 
+          type="date" 
+          id="reportDate" 
+          name="reportDate" 
+          required 
+          style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- Shift Time and Date Report -->
+<!-- Shift Time and Date Report 
 <div class="row" style="display: flex; gap: 20px; margin-bottom: 15px;">
   <div style="flex: 1;">
     <label for="shiftTime" style="font-weight: bold; margin-bottom: 5px; display: inline-block;">Shift (Time):</label>
@@ -143,6 +176,7 @@
       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
   </div>
 </div>
+      -->
       
 <!-- Pump Data -->
       <div class="section-title">Electronic Reading</div>
