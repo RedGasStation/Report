@@ -239,62 +239,83 @@
 <div style="display: flex; gap: 20px; align-items: flex-start;">
   <!-- Left Section -->
   <div style="flex: 1;">
-    <label for="safeDropBills" style="font-weight: bold; margin-bottom: 5px; display: block;">Bills:</label>
-    <input type="number" id="safeDropBills" name="safeDropBills" 
-           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-
-    <label for="safeDropCoins" style="font-weight: bold; margin-top: 15px; margin-bottom: 5px; display: block;">Coins:</label>
-    <input type="number" id="safeDropCoins" name="safeDropCoins" 
-           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-
-    <label for="totalCash" style="font-weight: bold; margin-top: 15px; margin-bottom: 5px; display: block;">Total Cash:</label>
-    <input type="number" id="totalCash" name="totalCash" 
-           style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 20px;">
+      <thead>
+        <tr style="background-color: #eaf2f8; color: #34495e; border-bottom: 2px solid #ddd;">
+          <th style="padding: 10px; text-align: center;" colspan="2">Safe Drop Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background-color: #f9f9f9;">
+          <td style="padding: 10px; text-align: left;">Bills</td>
+          <td style="padding: 10px; text-align: center;">
+            <input type="number" id="safeDropBills" name="safeDropBills" 
+                   style="width: 80%; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 5px;">
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; text-align: left;">Coins</td>
+          <td style="padding: 10px; text-align: center;">
+            <input type="number" id="safeDropCoins" name="safeDropCoins" 
+                   style="width: 80%; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 5px;">
+          </td>
+        </tr>
+        <tr style="background-color: #f9f9f9;">
+          <td style="padding: 10px; text-align: left;">Total Cash</td>
+          <td style="padding: 10px; text-align: center;">
+            <input type="number" id="totalCash" name="totalCash" 
+                   style="width: 80%; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 5px;">
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- Right Section -->
   <div style="flex: 1;">
     <table style="width: 100%; border-collapse: collapse; text-align: left;">
       <thead>
-        <tr style="background-color: #eaf2f8; color: #34495e;">
-          <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Column 1</th>
-          <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Column 2</th>
+        <tr style="background-color: #eaf2f8; color: #34495e; border-bottom: 2px solid #ddd;">
+          <th style="padding: 10px; text-align: center;" colspan="2">Safe Drop Received</th>
+        </tr>
+        <tr style="background-color: #f9f9f9; color: #34495e;">
+          <th style="padding: 10px; text-align: center;">Row</th>
+          <th style="padding: 10px; text-align: center;">Amount</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Loop for 8 rows -->
+        <!-- Loop for 16 rows -->
         <tr style="background-color: #f9f9f9;">
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Row 1</td>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Data 1</td>
+          <td style="padding: 10px; text-align: center;">1</td>
+          <td style="padding: 10px; text-align: center;">
+            <input type="number" name="safeDropRow1" 
+                   style="width: 80%; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 5px;">
+          </td>
         </tr>
         <tr>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Row 2</td>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Data 2</td>
+          <td style="padding: 10px; text-align: center;">2</td>
+          <td style="padding: 10px; text-align: center;">
+            <input type="number" name="safeDropRow2" 
+                   style="width: 80%; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 5px;">
+          </td>
         </tr>
+        <!-- Repeat similar structure for rows 3 through 16 -->
+        <!-- Example of alternating row colors -->
         <tr style="background-color: #f9f9f9;">
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Row 3</td>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Data 3</td>
+          <td style="padding: 10px; text-align: center;">3</td>
+          <td style="padding: 10px; text-align: center;">
+            <input type="number" name="safeDropRow3" 
+                   style="width: 80%; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 5px;">
+          </td>
         </tr>
         <tr>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Row 4</td>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Data 4</td>
+          <td style="padding: 10px; text-align: center;">4</td>
+          <td style="padding: 10px; text-align: center;">
+            <input type="number" name="safeDropRow4" 
+                   style="width: 80%; padding: 5px; text-align: center; border: 1px solid #ddd; border-radius: 5px;">
+          </td>
         </tr>
-        <tr style="background-color: #f9f9f9;">
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Row 5</td>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Data 5</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Row 6</td>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Data 6</td>
-        </tr>
-        <tr style="background-color: #f9f9f9;">
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Row 7</td>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Data 7</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Row 8</td>
-          <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">Data 8</td>
-        </tr>
+        <!-- Repeat for rows 5-16 -->
       </tbody>
     </table>
   </div>
