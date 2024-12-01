@@ -134,83 +134,11 @@
         </div>
       </div>
 
-      <!-- Pump Data -->
-      <div class="section-title">Electronic Reading</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Pump</th>
-            <th>Opening</th>
-            <th>Closing</th>
-            <th>Calibration</th>
-            <th>Liters Sold</th>
-            <th>Total Liters Sold</th>
-            <th>Pump Price</th>
-            <th>Total Sales</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Premium 1</td>
-            <td><input type="number" name="premium1Opening"></td>
-            <td><input type="number" name="premium1Closing"></td>
-            <td><input type="number" name="premium1Calibration"></td>
-            <td><input type="number" name="premium1Liters"></td>
-            <td><input type="number" name="premium1TotalLiters"></td>
-            <td><input type="number" name="premium1Price"></td>
-            <td><input type="number" name="premium1Sales"></td>
-          </tr>
-          <tr>
-            <td>Premium 2</td>
-            <td><input type="number" name="premium2Opening"></td>
-            <td><input type="number" name="premium2Closing"></td>
-            <td><input type="number" name="premium2Calibration"></td>
-            <td><input type="number" name="premium2Liters"></td>
-            <td><input type="number" name="premium2TotalLiters"></td>
-            <td><input type="number" name="premium2Price"></td>
-            <td><input type="number" name="premium2Sales"></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Dipstick Data -->
-      <div class="section-title">Dipstick</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Opening</th>
-            <th>Delivery</th>
-            <th>Closing</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Premium</td>
-            <td><input type="number" name="premiumOpening"></td>
-            <td><input type="number" name="premiumDelivery"></td>
-            <td><input type="number" name="premiumClosing"></td>
-          </tr>
-          <tr>
-            <td>Unleaded</td>
-            <td><input type="number" name="unleadedOpening"></td>
-            <td><input type="number" name="unleadedDelivery"></td>
-            <td><input type="number" name="unleadedClosing"></td>
-          </tr>
-          <tr>
-            <td>Diesel</td>
-            <td><input type="number" name="dieselOpening"></td>
-            <td><input type="number" name="dieselDelivery"></td>
-            <td><input type="number" name="dieselClosing"></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Safe Drop -->
-      <div class="section-title">Safe Drop</div>
+      <!-- Safe Drop Section and Summary -->
+      <div class="section-title">Safe Drop and Summary</div>
       <div style="display: flex; gap: 20px; align-items: flex-start;">
-        <!-- Left Section -->
-        <div style="flex: 1;">
+        <!-- Left Section: Safe Drop -->
+        <div style="flex: 2;">
           <table>
             <thead>
               <tr>
@@ -235,8 +163,8 @@
           </table>
         </div>
 
-        <!-- Right Section -->
-        <div style="flex: 1;">
+        <!-- Middle Section: Safe Drop Rows -->
+        <div style="flex: 2;">
           <table>
             <thead>
               <tr>
@@ -256,6 +184,32 @@
               <tr>
                 <td>3</td>
                 <td><input type="number" name="safeDropRow3"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Right Section: Summary -->
+        <div style="flex: 1;">
+          <table>
+            <thead>
+              <tr>
+                <th>Summary</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Fuel Sales</td>
+                <td><input type="number" name="fuelSales"></td>
+              </tr>
+              <tr>
+                <td>Total Expenses</td>
+                <td><input type="number" name="totalExpenses"></td>
+              </tr>
+              <tr>
+                <td>Net Sales</td>
+                <td><input type="number" name="netSales"></td>
               </tr>
             </tbody>
           </table>
