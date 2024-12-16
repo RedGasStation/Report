@@ -189,7 +189,6 @@
             <th>Closing</th>
             <th>Calibration</th>
             <th>Liters Sold</th>
-            <th>Total Liters Sold</th>
             <th>Pump Price</th>
             <th>Total Sales</th>
           </tr>
@@ -201,7 +200,6 @@
   <td><input type="number" name="premium1Closing"></td>
   <td><input type="number" name="premium1Calibration"></td>
   <td><input type="number" name="premium1Liters"></td>
-  <td><input type="number" name="premium1TotalLiters"></td>
   <td><input type="number" name="premium1Price"></td>
   <td><input type="number" name="premium1Sales"></td>
 </tr>
@@ -211,7 +209,6 @@
   <td><input type="number" name="premium2Closing"></td>
   <td><input type="number" name="premium2Calibration"></td>
   <td><input type="number" name="premium2Liters"></td>
-  <td><input type="number" name="premium2TotalLiters"></td>
   <td><input type="number" name="premium2Price"></td>
   <td><input type="number" name="premium2Sales"></td>
 </tr>
@@ -223,7 +220,6 @@
   <td><input type="number" name="unleaded1Closing"></td>
   <td><input type="number" name="unleaded1Calibration"></td>
   <td><input type="number" name="unleaded1Liters"></td>
-  <td><input type="number" name="unleaded1TotalLiters"></td>
   <td><input type="number" name="unleaded1Price"></td>
   <td><input type="number" name="unleaded1Sales"></td>
 </tr>
@@ -233,7 +229,6 @@
   <td><input type="number" name="unleaded2Closing"></td>
   <td><input type="number" name="unleaded2Calibration"></td>
   <td><input type="number" name="unleaded2Liters"></td>
-  <td><input type="number" name="unleaded2TotalLiters"></td>
   <td><input type="number" name="unleaded2Price"></td>
   <td><input type="number" name="unleaded2Sales"></td>
 </tr>
@@ -245,7 +240,6 @@
   <td><input type="number" name="diesel1Closing"></td>
   <td><input type="number" name="diesel1Calibration"></td>
   <td><input type="number" name="diesel1Liters"></td>
-  <td><input type="number" name="diesel1TotalLiters"></td>
   <td><input type="number" name="diesel1Price"></td>
   <td><input type="number" name="diesel1Sales"></td>
 </tr>
@@ -255,7 +249,6 @@
   <td><input type="number" name="diesel2Closing"></td>
   <td><input type="number" name="diesel2Calibration"></td>
   <td><input type="number" name="diesel2Liters"></td>
-  <td><input type="number" name="diesel2TotalLiters"></td>
   <td><input type="number" name="diesel2Price"></td>
   <td><input type="number" name="diesel2Sales"></td>
 </tr>
@@ -269,6 +262,7 @@
     <tr style="background-color: #eaf2f8; color: #34495e; border-bottom: 2px solid #ddd;">
       <th style="padding: 6px;">Type</th>
       <th style="padding: 6px;">Opening</th>
+      <th style="padding: 6px;">Total Liters Sold</th>
       <th style="padding: 6px;">Delivery</th>
       <th style="padding: 6px;">Closing</th>
     </tr>
@@ -317,6 +311,10 @@
               </tr>
               <tr>
                 <td>Total Cash</td>
+                <td><input type="number" name="safeDropTotal"></td>
+              </tr>
+              <tr>
+                <td>Short/Over</td>
                 <td><input type="number" name="safeDropTotal"></td>
               </tr>
             </tbody>
