@@ -381,9 +381,25 @@
           </table>
         </div>
       </div>
-    <div class="form-footer">
-     <button type="submit">Submit Report</button>
-     </div>
+  <div class="form-container">
+    <form id="gasStationForm">
+      <div>
+        <label for="crewName">Crew Name:</label>
+        <input type="text" id="crewName" name="crewName" required>
+      </div>
+      <div>
+        <label for="cashierName">Cashier:</label>
+        <input type="text" id="cashierName" name="cashierName" required>
+      </div>
+      <div>
+        <label for="reportDate">Date:</label>
+        <input type="date" id="reportDate" name="reportDate" required>
+      </div>
+      <div class="form-footer">
+        <button type="submit">Submit Report</button>
+      </div>
+    </form>
+  </div>
     </form>
   </div>
 
@@ -409,10 +425,9 @@
       if (form) {
         console.log("Form element found.");
         form.addEventListener('submit', async (event) => {
+          console.log("Submit event triggered.");
           event.preventDefault();
-          console.log("Form submitted.");
 
-          // Collect form data
           const formData = new FormData(event.target);
           const data = Object.fromEntries(formData.entries());
           console.log("Collected data:", data);
@@ -431,6 +446,6 @@
         console.error("Form element not found.");
       }
     });
-</script>
+  </script>
 </body>
 </html>
