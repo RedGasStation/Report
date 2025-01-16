@@ -85,6 +85,28 @@
     }
   });
 </script>
+
+<script>
+  document.getElementById('gasStationForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent the page from reloading on form submission
+
+    // Collect form data
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      // Save data to Firestore
+      const docRef = await db.collection('gasStationReports').add(data);
+      alert(`Report submitted successfully! Document ID: ${docRef.id}`);
+      event.target.reset(); // Clear the form
+    } catch (error) {
+      console.error('Error saving document:', error);
+      alert('Failed to submit the report. Check the console for details.');
+    }
+  });
+</script>
+  
+  
   <style>
     body {
       font-family: Arial, sans-serif;
