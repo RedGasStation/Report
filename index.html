@@ -255,6 +255,127 @@
       </tbody>
     </table>
 
+<!-- Expenses Section -->
+<div class="section-title">Expenses</div>
+<table id="expensesTable">
+  <thead>
+    <tr>
+      <th>Particulars</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input type="text" name="expensesParticulars[]" style="width: 100%;"></td>
+      <td><input type="number" name="expensesAmount[]" style="width: 100%;"></td>
+    </tr>
+    <tr>
+      <td><input type="text" name="expensesParticulars[]" style="width: 100%;"></td>
+      <td><input type="number" name="expensesAmount[]" style="width: 100%;"></td>
+    </tr>
+    <tr>
+      <td><input type="text" name="expensesParticulars[]" style="width: 100%;"></td>
+      <td><input type="number" name="expensesAmount[]" style="width: 100%;"></td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Total Expenses</td>
+      <td><input type="number" id="totalExpenses" readonly style="width: 100%;"></td>
+    </tr>
+  </tfoot>
+</table>
+<button type="button" onclick="addExpenseRow()">+ Add Expense</button>
+
+<!-- Discount Section -->
+<div class="section-title">Discount</div>
+<table id="discountTable">
+  <thead>
+    <tr>
+      <th>Client Name</th>
+      <th>Product</th>
+      <th>Liters</th>
+      <th>Discount per Liter</th>
+      <th>Total Discount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input type="text" name="discountClientName[]" style="width: 100%;"></td>
+      <td><input type="text" name="discountProduct[]" style="width: 100%;"></td>
+      <td><input type="number" name="discountLiters[]" style="width: 100%;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountPerLiter[]" style="width: 100%;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountTotal[]" style="width: 100%;" readonly></td>
+    </tr>
+    <tr>
+      <td><input type="text" name="discountClientName[]" style="width: 100%;"></td>
+      <td><input type="text" name="discountProduct[]" style="width: 100%;"></td>
+      <td><input type="number" name="discountLiters[]" style="width: 100%;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountPerLiter[]" style="width: 100%;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountTotal[]" style="width: 100%;" readonly></td>
+    </tr>
+    <tr>
+      <td><input type="text" name="discountClientName[]" style="width: 100%;"></td>
+      <td><input type="text" name="discountProduct[]" style="width: 100%;"></td>
+      <td><input type="number" name="discountLiters[]" style="width: 100%;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountPerLiter[]" style="width: 100%;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountTotal[]" style="width: 100%;" readonly></td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4">Total Discount</td>
+      <td><input type="number" id="totalDiscount" readonly style="width: 100%;"></td>
+    </tr>
+  </tfoot>
+</table>
+<button type="button" onclick="addDiscountRow()">+ Add Discount</button>
+
+<!-- JavaScript for Dynamic Rows -->
+<script>
+  function addExpenseRow() {
+    const expensesTable = document.getElementById('expensesTable').getElementsByTagName('tbody')[0];
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td><input type="text" name="expensesParticulars[]" style="width: 100%;"></td>
+      <td><input type="number" name="expensesAmount[]" style="width: 100%;"></td>
+    `;
+    expensesTable.appendChild(newRow);
+  }
+
+  function addDiscountRow() {
+    const discountTable = document.getElementById('discountTable').getElementsByTagName('tbody')[0];
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td><input type="text" name="discountClientName[]" style="width: 100%;"></td>
+      <td><input type="text" name="discountProduct[]" style="width: 100%;"></td>
+      <td><input type="number" name="discountLiters[]" style="width: 100%;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountPerLiter[]" style="width: 100%;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountTotal[]" style="width: 100%;" readonly></td>
+    `;
+    discountTable.appendChild(newRow);
+  }
+
+  function updateTotalDiscount(input) {
+    const row = input.closest('tr');
+    const liters = parseFloat(row.querySelector('input[name="discountLiters[]"]').value) || 0;
+    const perLiter = parseFloat(row.querySelector('input[name="discountPerLiter[]"]').value) || 0;
+    const totalDiscountField = row.querySelector('input[name="discountTotal[]"]');
+    totalDiscountField.value = (liters * perLiter).toFixed(2);
+
+    updateDiscountSummary();
+  }
+
+  function updateDiscountSummary() {
+    const totalField = document.getElementById('totalDiscount');
+    const totalDiscounts = Array.from(document.querySelectorAll('input[name="discountTotal[]"]')).reduce((sum, input) => {
+      return sum + (parseFloat(input.value) || 0);
+    }, 0);
+    totalField.value = totalDiscounts.toFixed(2);
+  }
+</script>
+
+    
     <!-- Dipstick Data -->
     <div class="section-title">Dipstick</div>
     <table>
