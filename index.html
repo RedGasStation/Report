@@ -29,33 +29,40 @@
       align-items: center;
       z-index: 9999;
     }
-    #loginForm {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-      width: 300px;
-      text-align: center;
-    }
-    #loginForm input {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    #loginForm button {
-      width: 90%;
-      padding: 10px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #loginForm button:hover {
-      background-color: #2980b9;
-    }
+/* Login Form Fix */
+#loginForm {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 300px;
+  text-align: center;
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+#loginForm input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+#loginForm button {
+  width: 100%;
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+#loginForm button:hover {
+  background-color: #2980b9;
+}
     /* Main Content Styles */
     #mainContent {
       display: none;
