@@ -42,6 +42,13 @@
       border-radius: 5px;
       text-align: center;
       font-size: 12px;
+      /* Remove spinner arrows */
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
     input[readonly] {
       background-color: #e9ecef;
@@ -95,27 +102,6 @@
     td input {
       margin: 0;
     }
-
-    @media (max-width: 768px) {
-      .form-container {
-        padding: 10px;
-      }
-
-      table {
-        font-size: 12px;
-      }
-
-      input[type="number"] {
-        width: 100%;
-        text-align: left;
-      }
-
-      button {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -123,6 +109,7 @@
   <form id="gasStationForm">
     <h1>Gas Station Report</h1>
 
+    <!-- Pump Data -->
     <div class="section-title">Electronic Reading</div>
     <table>
       <thead>
@@ -143,17 +130,26 @@
           <td><input type="number" name="premium1Closing" class="closing" data-row="premium1"></td>
           <td><input type="number" name="premium1Calibration"></td>
           <td><input type="number" name="premium1Liters" class="liters-sold" data-row="premium1" readonly></td>
-          <td><input type="number" name="premium1Price"></td>
-          <td><input type="number" name="premium1Sales"></td>
+          <td><input type="number" name="premium1Price" class="price" data-row="premium1"></td>
+          <td><input type="number" name="premium1Sales" class="total-sales" data-row="premium1" readonly></td>
         </tr>
         <tr>
-          <td>Unleaded 1</td>
-          <td><input type="number" name="unleaded1Opening" class="opening" data-row="unleaded1"></td>
-          <td><input type="number" name="unleaded1Closing" class="closing" data-row="unleaded1"></td>
-          <td><input type="number" name="unleaded1Calibration"></td>
-          <td><input type="number" name="unleaded1Liters" class="liters-sold" data-row="unleaded1" readonly></td>
-          <td><input type="number" name="unleaded1Price"></td>
-          <td><input type="number" name="unleaded1Sales"></td>
+          <td>Premium 2</td>
+          <td><input type="number" name="premium2Opening" class="opening" data-row="premium2"></td>
+          <td><input type="number" name="premium2Closing" class="closing" data-row="premium2"></td>
+          <td><input type="number" name="premium2Calibration"></td>
+          <td><input type="number" name="premium2Liters" class="liters-sold" data-row="premium2" readonly></td>
+          <td><input type="number" name="premium2Price" class="price" data-row="premium2"></td>
+          <td><input type="number" name="premium2Sales" class="total-sales" data-row="premium2" readonly></td>
+        </tr>
+        <tr>
+          <td>Diesel 1</td>
+          <td><input type="number" name="diesel1Opening" class="opening" data-row="diesel1"></td>
+          <td><input type="number" name="diesel1Closing" class="closing" data-row="diesel1"></td>
+          <td><input type="number" name="diesel1Calibration"></td>
+          <td><input type="number" name="diesel1Liters" class="liters-sold" data-row="diesel1" readonly></td>
+          <td><input type="number" name="diesel1Price" class="price" data-row="diesel1"></td>
+          <td><input type="number" name="diesel1Sales" class="total-sales" data-row="diesel1" readonly></td>
         </tr>
       </tbody>
     </table>
@@ -167,28 +163,44 @@
 
     const openingFields = document.querySelectorAll('.opening');
     const closingFields = document.querySelectorAll('.closing');
+    const priceFields = document.querySelectorAll('.price');
 
-    const calculateLitersSold = (row) => {
+    const calculateLitersSoldAndTotalSales = (row) => {
       const opening = parseFloat(document.querySelector(`.opening[data-row="${row}"]`)?.value) || 0;
       const closing = parseFloat(document.querySelector(`.closing[data-row="${row}"]`)?.value) || 0;
+      const price = parseFloat(document.querySelector(`.price[data-row="${row}"]`)?.value) || 0;
+
       const litersSoldField = document.querySelector(`.liters-sold[data-row="${row}"]`);
-      
+      const totalSalesField = document.querySelector(`.total-sales[data-row="${row}"]`);
+
       if (litersSoldField) {
-        litersSoldField.value = (closing - opening).toFixed(2);
+        const litersSold = closing - opening;
+        litersSoldField.value = litersSold.toFixed(2);
+
+        if (totalSalesField) {
+          totalSalesField.value = (litersSold * price).toFixed(2);
+        }
       }
     };
 
     openingFields.forEach(field => {
       field.addEventListener('input', (e) => {
         const row = e.target.getAttribute('data-row');
-        calculateLitersSold(row);
+        calculateLitersSoldAndTotalSales(row);
       });
     });
 
     closingFields.forEach(field => {
       field.addEventListener('input', (e) => {
         const row = e.target.getAttribute('data-row');
-        calculateLitersSold(row);
+        calculateLitersSoldAndTotalSales(row);
+      });
+    });
+
+    priceFields.forEach(field => {
+      field.addEventListener('input', (e) => {
+        const row = e.target.getAttribute('data-row');
+        calculateLitersSoldAndTotalSales(row);
       });
     });
   });
