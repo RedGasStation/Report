@@ -303,28 +303,51 @@
       <th>After</th>
       <th>Total Received</th>
       <th>Plate Number</th>
-      <th>DR Number</th>
-      <th>Delivered By</th>
-      <th>Received By</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><input type="datetime-local" name="deliveryDateTime"></td>
-      <td>
-        <select name="productType">
-          <option value="Premium">Premium</option>
-          <option value="Unleaded">Unleaded</option>
-          <option value="Diesel">Diesel</option>
-        </select>
-      </td>
-      <td><input type="number" name="beforeDelivery"></td>
-      <td><input type="number" name="afterDelivery"></td>
-      <td><input type="number" name="totalReceived"></td>
-      <td><input type="text" name="plateNumber"></td>
-      <td><input type="text" name="drNumber"></td>
-      <td><input type="text" name="deliveredBy"></td>
-      <td><input type="text" name="receivedBy"></td>
+      <td><input type="datetime-local" name="premiumDateTime"></td>
+      <td>Premium</td>
+      <td><input type="number" name="premiumBefore"></td>
+      <td><input type="number" name="premiumAfter"></td>
+      <td><input type="number" name="premiumTotalReceived"></td>
+      <td><input type="text" name="premiumPlateNumber"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><input type="datetime-local" name="unleadedDateTime"></td>
+      <td>Unleaded</td>
+      <td><input type="number" name="unleadedBefore"></td>
+      <td><input type="number" name="unleadedAfter"></td>
+      <td><input type="number" name="unleadedTotalReceived"></td>
+      <td><input type="text" name="unleadedPlateNumber"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><input type="datetime-local" name="dieselDateTime"></td>
+      <td>Diesel</td>
+      <td><input type="number" name="dieselBefore"></td>
+      <td><input type="number" name="dieselAfter"></td>
+      <td><input type="number" name="dieselTotalReceived"></td>
+      <td><input type="text" name="dieselPlateNumber"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="5"></td>
+      <td>DR Number</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="5"></td>
+      <td>Delivered By</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="5"></td>
+      <td>Received By</td>
+      <td></td>
     </tr>
   </tbody>
 </table>
