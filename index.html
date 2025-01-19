@@ -36,12 +36,19 @@
       font-size: 14px;
     }
     input[type="number"] {
-      width: 80px; /* Compact width for number fields */
+      width: 80px;
       padding: 5px;
       border: 1px solid #ddd;
       border-radius: 5px;
       text-align: center;
       font-size: 12px;
+      /* Remove spinner arrows */
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
     input[readonly] {
       background-color: #e9ecef;
@@ -159,7 +166,7 @@
       const totalSalesField = document.querySelector(`.total-sales[data-row="${row}"]`);
 
       if (litersSoldField) {
-        const litersSold = closing - opening;
+        const litersSold = opening - closing;
         litersSoldField.value = litersSold.toFixed(2);
 
         if (totalSalesField) {
