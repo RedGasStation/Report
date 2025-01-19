@@ -466,6 +466,103 @@
   }
 </script>
 
+<!-- Purchase Order Section -->
+<div class="section-title">Purchase Order</div>
+<table id="purchaseOrderTable" style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="text-align: left; padding: 10px; background-color: #f2f2f2;">Customer's Name</th>
+      <th style="text-align: left; padding: 10px; background-color: #f2f2f2;">Vehicle No.</th>
+      <th style="text-align: left; padding: 10px; background-color: #f2f2f2;">PO #</th>
+      <th style="text-align: left; padding: 10px; background-color: #f2f2f2;">Product</th>
+      <th style="text-align: left; padding: 10px; background-color: #f2f2f2;">Liters</th>
+      <th style="text-align: left; padding: 10px; background-color: #f2f2f2;">Discount</th>
+      <th style="text-align: left; padding: 10px; background-color: #f2f2f2;">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Initial Rows -->
+    <tr>
+      <td><input type="text" name="poCustomerName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poVehicleNo[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poNumber[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poDiscount[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poAmount[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    </tr>
+    <!-- Repeat for a total of 5 rows -->
+    <tr>
+      <td><input type="text" name="poCustomerName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poVehicleNo[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poNumber[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poDiscount[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poAmount[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    </tr>
+    <!-- Add three more rows here -->
+    <tr>
+      <td><input type="text" name="poCustomerName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poVehicleNo[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poNumber[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poDiscount[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poAmount[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    </tr>
+    <tr>
+      <td><input type="text" name="poCustomerName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poVehicleNo[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poNumber[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poDiscount[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poAmount[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="6" style="text-align: right; font-weight: bold; padding: 10px;">Total</td>
+      <td><input type="number" id="poTotalAmount" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    </tr>
+  </tfoot>
+</table>
+<button type="button" onclick="addPurchaseOrderRow()" style="margin-top: 10px; padding: 8px 16px; font-size: 14px;">+ Add Purchase Order</button>
+
+<script>
+  function addPurchaseOrderRow() {
+    const tableBody = document.getElementById('purchaseOrderTable').getElementsByTagName('tbody')[0];
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td><input type="text" name="poCustomerName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poVehicleNo[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poNumber[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="poProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poDiscount[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+      <td><input type="number" name="poAmount[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    `;
+    tableBody.appendChild(newRow);
+  }
+
+  function updatePurchaseOrderTotal(input) {
+    const row = input.closest('tr');
+    const liters = parseFloat(row.querySelector('input[name="poLiters[]"]').value) || 0;
+    const discount = parseFloat(row.querySelector('input[name="poDiscount[]"]').value) || 0;
+    const amountField = row.querySelector('input[name="poAmount[]"]');
+    const totalAmountField = document.getElementById('poTotalAmount');
+
+    const amount = liters - discount;
+    amountField.value = amount.toFixed(2);
+
+    const totalAmount = Array.from(document.querySelectorAll('input[name="poAmount[]"]')).reduce((sum, field) => {
+      return sum + (parseFloat(field.value) || 0);
+    }, 0);
+
+    totalAmountField.value = totalAmount.toFixed(2);
+  }
+</script>
     
     <!-- Safe Drop and Summary -->
     <div class="section-title">Safe Drop and Summary</div>
