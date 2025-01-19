@@ -292,6 +292,43 @@
       </tbody>
     </table>
 
+<!-- Product Delivery Details -->
+<div class="section-title">Product Delivery Details</div>
+<table>
+  <thead>
+    <tr>
+      <th>Date & Time</th>
+      <th>Product</th>
+      <th>Before</th>
+      <th>After</th>
+      <th>Total Received</th>
+      <th>Plate Number</th>
+      <th>DR Number</th>
+      <th>Delivered By</th>
+      <th>Received By</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input type="datetime-local" name="deliveryDateTime"></td>
+      <td>
+        <select name="productType">
+          <option value="Premium">Premium</option>
+          <option value="Unleaded">Unleaded</option>
+          <option value="Diesel">Diesel</option>
+        </select>
+      </td>
+      <td><input type="number" name="beforeDelivery"></td>
+      <td><input type="number" name="afterDelivery"></td>
+      <td><input type="number" name="totalReceived"></td>
+      <td><input type="text" name="plateNumber"></td>
+      <td><input type="text" name="drNumber"></td>
+      <td><input type="text" name="deliveredBy"></td>
+      <td><input type="text" name="receivedBy"></td>
+    </tr>
+  </tbody>
+</table>
+
     <!-- Safe Drop and Summary -->
     <div class="section-title">Safe Drop and Summary</div>
     <div class="flex-row">
