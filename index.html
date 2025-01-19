@@ -381,6 +381,51 @@
   </form>
 </div>
 
+  <script>
+  // Your Firebase configuration
+  document.addEventListener('DOMContentLoaded', () => {
+  console.log("DOM fully loaded and parsed.");
+    
+    const firebaseConfig = {
+    apiKey: "AIzaSyDs0nHtHiQOANohq2TBm_xXUJ8qRtRQQhs",
+    authDomain: "redstar-27bfa.firebaseapp.com",
+    projectId: "redstar-27bfa",
+    storageBucket: "redstar-27bfa.firebasestorage.app",
+    messagingSenderId: "863347286957",
+    appId: "1:863347286957:web:3e27391d7c0667174ef724",
+    measurementId: "G-WBM4JBV99F"
+  };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      const form = document.getElementById('gasStationForm');
+      if (form) {
+        console.log("Form element found.");
+        form.addEventListener('submit', async (event) => {
+          console.log("Submit event triggered.");
+          event.preventDefault();
+
+          const formData = new FormData(event.target);
+          const data = Object.fromEntries(formData.entries());
+          console.log("Collected data:", data);
+
+          try {
+            const docRef = await db.collection('gasStationReports').add(data);
+            console.log("Document written with ID:", docRef.id);
+            alert(`Report submitted successfully! Document ID: ${docRef.id}`);
+            event.target.reset();
+          } catch (error) {
+            console.error("Error saving document:", error);
+            alert("Failed to submit the report. Check console for details.");
+          }
+        });
+      } else {
+        console.error("Form element not found.");
+      }
+    });
+  </script>
+  
 <script>
   function updateValues(input) {
     const row = input.closest('tr');
