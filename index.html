@@ -255,6 +255,97 @@
       </tbody>
     </table>
 
+    <!-- Dipstick Data -->
+    <div class="section-title">Dipstick</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Opening</th>
+          <th>Total Liters Sold</th>
+          <th>Delivery</th>
+          <th>Closing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Premium</td>
+          <td><input type="number" name="premiumOpening"></td>
+          <td><input type="number" name="premiumTotalLitersSold" readonly></td>
+          <td><input type="number" name="premiumDelivery"></td>
+          <td><input type="number" name="premiumClosing"></td>
+        </tr>
+        <tr>
+          <td>Unleaded</td>
+          <td><input type="number" name="unleadedOpening"></td>
+          <td><input type="number" name="unleadedTotalLitersSold" readonly></td>
+          <td><input type="number" name="unleadedDelivery"></td>
+          <td><input type="number" name="unleadedClosing"></td>
+        </tr>
+        <tr>
+          <td>Diesel</td>
+          <td><input type="number" name="dieselOpening"></td>
+          <td><input type="number" name="dieselTotalLitersSold" readonly></td>
+          <td><input type="number" name="dieselDelivery"></td>
+          <td><input type="number" name="dieselClosing"></td>
+        </tr>
+      </tbody>
+    </table>
+
+<!-- Product Delivery Details -->
+<div class="section-title">Product Delivery Details</div>
+<table>
+  <thead>
+    <tr>
+      <th>Date & Time</th>
+      <th>Product</th>
+      <th>Before</th>
+      <th>After</th>
+      <th>Total Received</th>
+      <th>Plate Number</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Premium Row -->
+    <tr>
+      <td><input type="datetime-local" name="premiumDateTime" style="width: 170px;"></td>
+      <td>Premium</td>
+      <td><input type="number" name="premiumBefore" style="width: 40px;"></td>
+      <td><input type="number" name="premiumAfter" style="width: 40px;"></td>
+      <td><input type="number" name="premiumTotalReceived" style="width: 40px;"></td>
+      <td>DR Number</td>
+      <td><input type="number" name="DRNumber" style="width: 80px;"></td>
+
+    </tr>
+
+    <!-- Unleaded Row -->
+    <tr>
+      <td><input type="datetime-local" name="unleadedDateTime" style="width: 170px;"></td>
+      <td>Unleaded</td>
+      <td><input type="number" name="unleadedBefore" style="width: 40px;"></td>
+      <td><input type="number" name="unleadedAfter" style="width: 40px;"></td>
+      <td><input type="number" name="unleadedTotalReceived" style="width: 40px;"></td>
+      <td>Delivered By</td>
+      <td><input type="number" name="DeliveredBy" style="width: 80px;"></td>
+  
+    </tr>
+
+    <!-- Diesel Row -->
+    <tr>
+      <td><input type="datetime-local" name="dieselDateTime" style="width: 170px;"></td>
+      <td>Diesel</td>
+      <td><input type="number" name="dieselBefore" style="width: 40px;"></td>
+      <td><input type="number" name="dieselAfter" style="width: 40px;"></td>
+      <td><input type="number" name="dieselTotalReceived" style="width: 40px;"></td>
+      <td>Received By</td>
+      <td><input type="number" name="ReceivedBy" style="width: 80px;"></td>
+ 
+    </tr>
+  </tbody>
+</table>
+
+
 <!-- Expenses Section -->
 <div class="section-title">Expenses</div>
 <table id="expensesTable" style="width: 100%; border-collapse: collapse;">
@@ -375,96 +466,7 @@
   }
 </script>
 
-    <!-- Dipstick Data -->
-    <div class="section-title">Dipstick</div>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Opening</th>
-          <th>Total Liters Sold</th>
-          <th>Delivery</th>
-          <th>Closing</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Premium</td>
-          <td><input type="number" name="premiumOpening"></td>
-          <td><input type="number" name="premiumTotalLitersSold" readonly></td>
-          <td><input type="number" name="premiumDelivery"></td>
-          <td><input type="number" name="premiumClosing"></td>
-        </tr>
-        <tr>
-          <td>Unleaded</td>
-          <td><input type="number" name="unleadedOpening"></td>
-          <td><input type="number" name="unleadedTotalLitersSold" readonly></td>
-          <td><input type="number" name="unleadedDelivery"></td>
-          <td><input type="number" name="unleadedClosing"></td>
-        </tr>
-        <tr>
-          <td>Diesel</td>
-          <td><input type="number" name="dieselOpening"></td>
-          <td><input type="number" name="dieselTotalLitersSold" readonly></td>
-          <td><input type="number" name="dieselDelivery"></td>
-          <td><input type="number" name="dieselClosing"></td>
-        </tr>
-      </tbody>
-    </table>
-
-<!-- Product Delivery Details -->
-<div class="section-title">Product Delivery Details</div>
-<table>
-  <thead>
-    <tr>
-      <th>Date & Time</th>
-      <th>Product</th>
-      <th>Before</th>
-      <th>After</th>
-      <th>Total Received</th>
-      <th>Plate Number</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Premium Row -->
-    <tr>
-      <td><input type="datetime-local" name="premiumDateTime" style="width: 170px;"></td>
-      <td>Premium</td>
-      <td><input type="number" name="premiumBefore" style="width: 40px;"></td>
-      <td><input type="number" name="premiumAfter" style="width: 40px;"></td>
-      <td><input type="number" name="premiumTotalReceived" style="width: 40px;"></td>
-      <td>DR Number</td>
-      <td><input type="number" name="DRNumber" style="width: 80px;"></td>
-
-    </tr>
-
-    <!-- Unleaded Row -->
-    <tr>
-      <td><input type="datetime-local" name="unleadedDateTime" style="width: 170px;"></td>
-      <td>Unleaded</td>
-      <td><input type="number" name="unleadedBefore" style="width: 40px;"></td>
-      <td><input type="number" name="unleadedAfter" style="width: 40px;"></td>
-      <td><input type="number" name="unleadedTotalReceived" style="width: 40px;"></td>
-      <td>Delivered By</td>
-      <td><input type="number" name="DeliveredBy" style="width: 80px;"></td>
-  
-    </tr>
-
-    <!-- Diesel Row -->
-    <tr>
-      <td><input type="datetime-local" name="dieselDateTime" style="width: 170px;"></td>
-      <td>Diesel</td>
-      <td><input type="number" name="dieselBefore" style="width: 40px;"></td>
-      <td><input type="number" name="dieselAfter" style="width: 40px;"></td>
-      <td><input type="number" name="dieselTotalReceived" style="width: 40px;"></td>
-      <td>Received By</td>
-      <td><input type="number" name="ReceivedBy" style="width: 80px;"></td>
- 
-    </tr>
-  </tbody>
-</table>
-
+    
     <!-- Safe Drop and Summary -->
     <div class="section-title">Safe Drop and Summary</div>
     <div class="flex-row">
