@@ -1,781 +1,235 @@
-<!DOCTYPE html>
-<html lang="en">
+<style>
+    /* General Body Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f9f9f9;
+        color: #333;
+        line-height: 1.6;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Gas Station Report</title>
-    <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore-compat.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0
-        }
+    /* Login Screen Styles */
+    #loginScreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
 
-        #loginScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, .8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999
-        }
+    #loginForm {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
+        width: 300px;
+        text-align: center;
+        box-sizing: border-box;
+    }
 
-        #loginForm {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
-            width: 300px;
-            text-align: center;
-            box-sizing: border-box
-        }
+    #loginForm input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
 
-        #loginForm input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box
-        }
+    #loginForm button {
+        width: 100%;
+        padding: 10px;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
 
-        #loginForm button {
-            width: 100%;
-            padding: 10px;
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            box-sizing: border-box
-        }
+    #loginForm button:hover {
+        background-color: #2980b9;
+    }
 
-        #loginForm button:hover {
-            background-color: #2980b9
-        }
+    /* Main Content Styles */
+    #mainContent {
+        display: none;
+    }
 
-        #mainContent {
-            display: none
-        }
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-            color: #333;
-            line-height: 1.6
-        }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
 
-        h1 {
-            text-align: center;
-            color: #2c3e50
-        }
+    input[type="date"],
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 700
-        }
+    input[type="number"] {
+        width: 80px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 12px;
+        -moz-appearance: textfield;
+    }
 
-        input[type=date],
-        input[type=text] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px
-        }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
-        input[type=number] {
-            width: 80px;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 12px;
-            -moz-appearance: textfield
-        }
+    button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #3498db;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0
-        }
+    button:hover {
+        background-color: #2980b9;
+    }
 
-        button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #3498db;
-            color: #fff;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 5px;
-            cursor: pointer
-        }
+    .form-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+    }
 
-        button:hover {
-            background-color: #2980b9
-        }
+    .section-title {
+        font-size: 18px;
+        color: #34495e;
+        border-bottom: 2px solid #ddd;
+        margin: 30px 0 10px;
+        padding-bottom: 5px;
+    }
 
+    table {
+        width: 100%;
+        max-width: 100%; /* Prevent tables from exceeding container width */
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        background-color: #fff;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    th {
+        background-color: #eaf2f8;
+        color: #2c3e50;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    td input,
+    td select {
+        margin: 0;
+        width: 100%; /* Ensure inputs stretch to the full width of the cell */
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    .flex-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .flex-row > div {
+        flex: 1;
+    }
+
+    .form-footer {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
         .form-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, .1)
-        }
-
-        .section-title {
-            font-size: 18px;
-            color: #34495e;
-            border-bottom: 2px solid #ddd;
-            margin: 30px 0 10px;
-            padding-bottom: 5px
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background-color: #fff
-        }
-
-        td,
-        th {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            font-size: 14px
-        }
-
-        th {
-            background-color: #eaf2f8;
-            color: #2c3e50;
-            font-weight: 700;
-            text-align: center
-        }
-
-        td input {
-            margin: 0
+            padding: 10px;
         }
 
         .flex-row {
-            display: flex;
-            gap: 20px
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .flex-row>div {
-            flex: 1
+        .flex-row > div {
+            width: 100%;
         }
 
-        .form-footer {
-            text-align: center;
-            margin-top: 20px
+        table {
+            font-size: 12px;
         }
 
-        @media (max-width:768px) {
-            .form-container {
-                padding: 10px
-            }
-
-            .flex-row {
-                flex-direction: column;
-                gap: 15px
-            }
-
-            .flex-row>div {
-                width: 100%
-            }
-
-            table {
-                font-size: 12px
-            }
-
-            input[type=number] {
-                width: 100%;
-                text-align: left
-            }
-
-            button {
-                width: 100%;
-                padding: 12px;
-                font-size: 16px
-            }
+        th, td {
+            padding: 6px;
         }
-    </style>
-</head>
 
-<body>
-    <div id="loginScreen">
-        <form id="loginForm">
-            <h2>Login</h2><input type="text" id="username" placeholder="Username" required> <input type="password" id="password" placeholder="Password" required> <button type="button" onclick="validateLogin()">Login</button>
-            <p id="loginError" style="color:red;display:none">Invalid credentials. Try again.</p>
-        </form>
-    </div>
-    <div class="form-container">
-        <form id="gasStationForm">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:15px">
-                <div style="flex:1">
-                    <p style="margin:0;font-size:16px;font-weight:700;color:red">RED STAR GAS STATION</p>
-                    <p style="margin:0;font-size:14px;color:#34495e">BRGY PEMIENTA UMINGAN PANGASINAN<br>CFI NO 0922875-1312</p>
-                </div>
-                <div style="flex:1">
-                    <div style="display:flex;flex-direction:column;gap:10px">
-                        <div style="display:flex;gap:10px"><label for="crewName" style="flex:0 0 120px;font-weight:700">Crew Name:</label> <input type="text" id="crewName" name="crewName" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
-                        <div style="display:flex;gap:10px"><label for="cashierName" style="flex:0 0 120px;font-weight:700">Cashier:</label> <input type="text" id="cashierName" name="cashierName" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
-                        <div style="display:flex;gap:10px"><label for="shiftTime" style="flex:0 0 120px;font-weight:700">Shift (Time):</label> <select id="shiftTime" name="shiftTime" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px">
-                                <option value="" disabled="disabled" selected="selected">Select Shift</option>
-                                <option value="06:00am to 15:00pm">06:00am to 15:00pm</option>
-                                <option value="14:00pm to 22:00pm">14:00pm to 22:00pm</option>
-                                <option value="21:00pm to 06:00am">21:00pm to 06:00am</option>
-                            </select></div>
-                        <div style="display:flex;gap:10px"><label for="reportDate" style="flex:0 0 120px;font-weight:700">Date:</label> <input type="date" id="reportDate" name="reportDate" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="section-title">Electronic Reading</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Pump</th>
-                        <th>Opening</th>
-                        <th>Closing</th>
-                        <th>Calibration</th>
-                        <th>Liters Sold</th>
-                        <th>Pump Price</th>
-                        <th>Total Sales</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr>
-    <td>Premium 1</td>
-    <td><input type="number" name="premium1Opening" onchange="updateValues(this)"></td>
-    <td><input type="number" name="premium1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
-    <td><input type="number" name="premium1Calibration"></td>
-    <td><input type="number" name="premium1Liters" readonly="readonly"></td>
-    <td><input type="number" name="premium1Price" onchange="updateValues(this)"></td>
-    <td><input type="number" name="premium1Sales" readonly="readonly"></td>
-</tr>
-<tr>
-    <td>Premium 2</td>
-    <td><input type="number" name="premium2Opening" onchange="updateValues(this)"></td>
-    <td><input type="number" name="premium2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
-    <td><input type="number" name="premium2Calibration"></td>
-    <td><input type="number" name="premium2Liters" readonly="readonly"></td>
-    <td><input type="number" name="premium2Price" onchange="updateValues(this)"></td>
-    <td><input type="number" name="premium2Sales" readonly="readonly"></td>
-</tr>
-<tr>
-    <td>Unleaded 1</td>
-    <td><input type="number" name="unleaded1Opening" onchange="updateValues(this)"></td>
-    <td><input type="number" name="unleaded1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
-    <td><input type="number" name="unleaded1Calibration"></td>
-    <td><input type="number" name="unleaded1Liters" readonly="readonly"></td>
-    <td><input type="number" name="unleaded1Price" onchange="updateValues(this)"></td>
-    <td><input type="number" name="unleaded1Sales" readonly="readonly"></td>
-</tr>
-<tr>
-    <td>Unleaded 2</td>
-    <td><input type="number" name="unleaded2Opening" onchange="updateValues(this)"></td>
-    <td><input type="number" name="unleaded2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
-    <td><input type="number" name="unleaded2Calibration"></td>
-    <td><input type="number" name="unleaded2Liters" readonly="readonly"></td>
-    <td><input type="number" name="unleaded2Price" onchange="updateValues(this)"></td>
-    <td><input type="number" name="unleaded2Sales" readonly="readonly"></td>
-</tr>
-<tr>
-    <td>Diesel 1</td>
-    <td><input type="number" name="diesel1Opening" onchange="updateValues(this)"></td>
-    <td><input type="number" name="diesel1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
-    <td><input type="number" name="diesel1Calibration"></td>
-    <td><input type="number" name="diesel1Liters" readonly="readonly"></td>
-    <td><input type="number" name="diesel1Price" onchange="updateValues(this)"></td>
-    <td><input type="number" name="diesel1Sales" readonly="readonly"></td>
-</tr>
-<tr>
-    <td>Diesel 2</td>
-    <td><input type="number" name="diesel2Opening" onchange="updateValues(this)"></td>
-    <td><input type="number" name="diesel2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
-    <td><input type="number" name="diesel2Calibration"></td>
-    <td><input type="number" name="diesel2Liters" readonly="readonly"></td>
-    <td><input type="number" name="diesel2Price" onchange="updateValues(this)"></td>
-    <td><input type="number" name="diesel2Sales" readonly="readonly"></td>
-</tr>
-                </tbody>
-            </table>
-
-<div class="section-title">Dipstick</div>
-<table>
-    <thead>
-        <tr>
-            <th>Type</th>
-            <th>Opening</th>
-            <th>Total Liters Sold</th>
-            <th>Delivery</th>
-            <th>Closing</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Premium</td>
-            <td><input type="number" id="premiumOpening" readonly></td>
-            <td><input type="number" id="premiumTotalLitersSold" readonly></td>
-            <td><input type="number" id="premiumDelivery"></td>
-            <td><input type="number" id="premiumClosing"></td>
-        </tr>
-        <tr>
-            <td>Unleaded</td>
-            <td><input type="number" id="unleadedOpening" readonly></td>
-            <td><input type="number" id="unleadedTotalLitersSold" readonly></td>
-            <td><input type="number" id="unleadedDelivery"></td>
-            <td><input type="number" id="unleadedClosing"></td>
-        </tr>
-        <tr>
-            <td>Diesel</td>
-            <td><input type="number" id="dieselOpening" readonly></td>
-            <td><input type="number" id="dieselTotalLitersSold" readonly></td>
-            <td><input type="number" id="dieselDelivery"></td>
-            <td><input type="number" id="dieselClosing"></td>
-        </tr>
-    </tbody>
-</table>
-
-
-            <div class="section-title">Product Delivery Details</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date & Time</th>
-                        <th>Product</th>
-                        <th>Before</th>
-                        <th>After</th>
-                        <th>Total Received</th>
-                        <th>Plate Number</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="datetime-local" name="premiumDateTime" style="width:170px"></td>
-                        <td>Premium</td>
-                        <td><input type="number" name="premiumBefore" style="width:40px"></td>
-                        <td><input type="number" name="premiumAfter" style="width:40px"></td>
-                        <td><input type="number" name="premiumTotalReceived" style="width:40px"></td>
-                        <td>DR Number</td>
-                        <td><input type="number" name="DRNumber" style="width:80px"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="datetime-local" name="unleadedDateTime" style="width:170px"></td>
-                        <td>Unleaded</td>
-                        <td><input type="number" name="unleadedBefore" style="width:40px"></td>
-                        <td><input type="number" name="unleadedAfter" style="width:40px"></td>
-                        <td><input type="number" name="unleadedTotalReceived" style="width:40px"></td>
-                        <td>Delivered By</td>
-                        <td><input type="number" name="DeliveredBy" style="width:80px"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="datetime-local" name="dieselDateTime" style="width:170px"></td>
-                        <td>Diesel</td>
-                        <td><input type="number" name="dieselBefore" style="width:40px"></td>
-                        <td><input type="number" name="dieselAfter" style="width:40px"></td>
-                        <td><input type="number" name="dieselTotalReceived" style="width:40px"></td>
-                        <td>Received By</td>
-                        <td><input type="number" name="ReceivedBy" style="width:80px"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="section-title">Expenses</div>
-            <table id="expensesTable" style="width:100%;border-collapse:collapse">
-                <thead>
-                    <tr>
-                        <th style="text-align:left;width:70%;padding:10px;background-color:#f2f2f2">Particulars</th>
-                        <th style="text-align:left;width:30%;padding:10px;background-color:#f2f2f2">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text" name="expensesParticulars[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="expensesAmount[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="expensesParticulars[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="expensesAmount[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="expensesParticulars[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="expensesAmount[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td style="text-align:right;font-weight:700;padding:10px">Total Expenses</td>
-                        <td><input type="number" id="totalExpenses" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                </tfoot>
-            </table><button type="button" onclick="addExpenseRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Expense</button>
-            <div class="section-title">Discount</div>
-            <table id="discountTable" style="width:100%;border-collapse:collapse">
-                <thead>
-                    <tr>
-                        <th style="text-align:left;width:25%;padding:10px;background-color:#f2f2f2">Client Name</th>
-                        <th style="text-align:left;width:20%;padding:10px;background-color:#f2f2f2">Product</th>
-                        <th style="text-align:left;width:15%;padding:10px;background-color:#f2f2f2">Liters</th>
-                        <th style="text-align:left;width:20%;padding:10px;background-color:#f2f2f2">Discount per Liter</th>
-                        <th style="text-align:left;width:20%;padding:10px;background-color:#f2f2f2">Total Discount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text" name="discountClientName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="discountProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="discountLiters[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
-                        <td><input type="number" name="discountPerLiter[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
-                        <td><input type="number" name="discountTotal[]" readonly="readonly" style="width:90%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="discountClientName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="discountProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="discountLiters[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
-                        <td><input type="number" name="discountPerLiter[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
-                        <td><input type="number" name="discountTotal[]" readonly="readonly" style="width:90%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="discountClientName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="discountProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="discountLiters[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
-                        <td><input type="number" name="discountPerLiter[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
-                        <td><input type="number" name="discountTotal[]" readonly="readonly" style="width:90%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" style="text-align:right;font-weight:700;padding:10px">Total Discount</td>
-                        <td><input type="number" id="totalDiscount" readonly="readonly" style="width:90%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                </tfoot>
-            </table><button type="button" onclick="addDiscountRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Discount</button>
-            <script>
-                function addExpenseRow() {
-                    var e = document.getElementById("expensesTable").getElementsByTagName("tbody")[0],
-                        t = document.createElement("tr");
-                    t.innerHTML = `
-      <td><input type="text" name="expensesParticulars[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="number" name="expensesAmount[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-    `, e.appendChild(t)
-                }
-
-                function addDiscountRow() {
-                    var e = document.getElementById("discountTable").getElementsByTagName("tbody")[0],
-                        t = document.createElement("tr");
-                    t.innerHTML = `
-      <td><input type="text" name="discountClientName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="text" name="discountProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="number" name="discountLiters[]" style="width: 90%; padding: 5px; box-sizing: border-box;" onchange="updateTotalDiscount(this)"></td>
-      <td><input type="number" name="discountPerLiter[]" style="width: 90%; padding: 5px; box-sizing: border-box;" onchange="updateTotalDiscount(this)"></td>
-      <td><input type="number" name="discountTotal[]" readonly style="width: 90%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
-    `, e.appendChild(t)
-                }
-
-                function updateTotalDiscount(e) {
-                    var e = e.closest("tr"),
-                        t = parseFloat(e.querySelector('input[name="discountLiters[]"]').value) || 0,
-                        n = parseFloat(e.querySelector('input[name="discountPerLiter[]"]').value) || 0;
-                    e.querySelector('input[name="discountTotal[]"]').value = (t * n).toFixed(2), updateDiscountSummary()
-                }
-
-                function updateDiscountSummary() {
-                    var e = document.getElementById("totalDiscount"),
-                        t = Array.from(document.querySelectorAll('input[name="discountTotal[]"]')).reduce((e, t) => e + (parseFloat(t.value) || 0), 0);
-                    e.value = t.toFixed(2)
-                }
-            </script>
-            
-            <div class="section-title">Purchase Order</div>
-            <table id="purchaseOrderTable" style="width:100%;border-collapse:collapse">
-                <thead>
-                    <tr>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Customer's Name</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Vehicle No.</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">PO #</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Product</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Liters</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Discount</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6" style="text-align:right;font-weight:700;padding:10px">Total</td>
-                        <td><input type="number" id="poTotalAmount" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                </tfoot>
-            </table><button type="button" onclick="addPurchaseOrderRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Purchase Order</button>
-            <script>
-                function addPurchaseOrderRow() {
-                    var e = document.getElementById("purchaseOrderTable").getElementsByTagName("tbody")[0],
-                        t = document.createElement("tr");
-                    t.innerHTML = `
-      <td><input type="text" name="poCustomerName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="text" name="poVehicleNo[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="text" name="poNumber[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="text" name="poProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
-      <td><input type="number" name="poDiscount[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
-      <td><input type="number" name="poAmount[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
-    `, e.appendChild(t)
-                }
-
-                function updatePurchaseOrderTotal(e) {
-                    var e = e.closest("tr"),
-                        t = parseFloat(e.querySelector('input[name="poLiters[]"]').value) || 0,
-                        o = parseFloat(e.querySelector('input[name="poDiscount[]"]').value) || 0,
-                        e = e.querySelector('input[name="poAmount[]"]'),
-                        d = document.getElementById("poTotalAmount"),
-                        t = t - o,
-                        o = (e.value = t.toFixed(2), Array.from(document.querySelectorAll('input[name="poAmount[]"]')).reduce((e, t) => e + (parseFloat(t.value) || 0), 0));
-                    d.value = o.toFixed(2)
-                }
-            </script>
-            <div class="section-title">Safe Drop and Summary</div>
-            <div class="flex-row">
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Details</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Bills</td>
-                                <td><input type="number" name="safeDropBills"></td>
-                            </tr>
-                            <tr>
-                                <td>Coins</td>
-                                <td><input type="number" name="safeDropCoins"></td>
-                            </tr>
-                            <tr>
-                                <td>Total Cash</td>
-                                <td><input type="number" name="safeDropTotal"></td>
-                            </tr>
-                            <tr>
-                                <td>Short/Over</td>
-                                <td><input type="number" name="safeDropShortOver"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Safe Drop</th>
-                                <th>Received</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td><input type="number" name="safeDropRow1"></td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td><input type="number" name="safeDropRow2"></td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td><input type="number" name="safeDropRow3"></td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td><input type="number" name="safeDropRow4"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Summary</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Fuel Sales</td>
-                                <td><input type="number" name="fuelSales"></td>
-                            </tr>
-                            <tr>
-                                <td>Total Expenses</td>
-                                <td><input type="number" name="totalExpenses"></td>
-                            </tr>
-                            <tr>
-                                <td>Net Sales</td>
-                                <td><input type="number" name="netSales"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div><button type="submit">Submit Report</button>
-        </form>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            console.log("DOM fully loaded and parsed.");
-            firebase.initializeApp({
-                apiKey: "AIzaSyDs0nHtHiQOANohq2TBm_xXUJ8qRtRQQhs",
-                authDomain: "redstar-27bfa.firebaseapp.com",
-                projectId: "redstar-27bfa",
-                storageBucket: "redstar-27bfa.firebasestorage.app",
-                messagingSenderId: "863347286957",
-                appId: "1:863347286957:web:3e27391d7c0667174ef724",
-                measurementId: "G-WBM4JBV99F"
-            });
-            let r = firebase.firestore();
-            var e = document.getElementById("gasStationForm");
-            e ? (console.log("Form element found."), e.addEventListener("submit", async e => {
-                console.log("Submit event triggered."), e.preventDefault();
-                var t = new FormData(e.target),
-                    t = Object.fromEntries(t.entries());
-                console.log("Collected data:", t);
-                try {
-                    var o = await r.collection("gasStationReports").add(t);
-                    console.log("Document written with ID:", o.id), alert("Report submitted successfully! Document ID: " + o.id), e.target.reset()
-                } catch (e) {
-                    console.error("Error saving document:", e), alert("Failed to submit the report. Check console for details.")
-                }
-            })) : console.error("Form element not found.")
-        })
-    </script>
-    <script>
-function updateValues(input) {
-    const row = input.closest("tr");
-    const opening = parseFloat(row.querySelector('input[name$="Opening"]').value) || 0;
-    const closing = parseFloat(row.querySelector('input[name$="Closing"]').value) || 0;
-    const price = parseFloat(row.querySelector('input[name$="Price"]').value) || 0;
-
-    // Calculate Liters Sold and Total Sales
-    const litersSold = closing - opening;
-    const totalSales = litersSold * price;
-
-    // Update Liters Sold and Total Sales fields
-    row.querySelector('input[name$="Liters"]').value = litersSold.toFixed(2);
-    row.querySelector('input[name$="Sales"]').value = totalSales.toFixed(2);
-
-    // Trigger Dipstick recalculation
-    computeDipstickFromPumpReadings();
-}
-    </script>
-    <script>
-        let USERNAME = "admin",
-            PASSWORD = "password123";
-
-        function validateLogin() {
-            var e = document.getElementById("username").value,
-                t = document.getElementById("password").value;
-            if (e === USERNAME && t === PASSWORD) document.getElementById("loginScreen").style.display = "none", document.getElementById("mainContent").style.display = "block";
-            else {
-                let e = document.getElementById("loginError");
-                e.style.display = "block", setTimeout(() => {
-                    e.style.display = "none"
-                }, 3e3)
-            }
+        input[type="number"] {
+            width: 100%;
+            text-align: left;
         }
-    </script>
-    <script>
-function computeDipstickFromPumpReadings() {
-    // Premium Total Liters Sold
-    const premium1Liters = parseFloat(document.querySelector('input[name="premium1Liters"]').value) || 0;
-    const premium2Liters = parseFloat(document.querySelector('input[name="premium2Liters"]').value) || 0;
-    const premiumTotal = premium1Liters + premium2Liters;
-    document.getElementById("premiumTotalLitersSold").value = premiumTotal.toFixed(2);
 
-    // Unleaded Total Liters Sold
-    const unleaded1Liters = parseFloat(document.querySelector('input[name="unleaded1Liters"]').value) || 0;
-    const unleaded2Liters = parseFloat(document.querySelector('input[name="unleaded2Liters"]').value) || 0;
-    const unleadedTotal = unleaded1Liters + unleaded2Liters;
-    document.getElementById("unleadedTotalLitersSold").value = unleadedTotal.toFixed(2);
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+        }
+    }
 
-    // Diesel Total Liters Sold
-    const diesel1Liters = parseFloat(document.querySelector('input[name="diesel1Liters"]').value) || 0;
-    const diesel2Liters = parseFloat(document.querySelector('input[name="diesel2Liters"]').value) || 0;
-    const dieselTotal = diesel1Liters + diesel2Liters;
-    document.getElementById("dieselTotalLitersSold").value = dieselTotal.toFixed(2);
-}
+    /* Scoped Styles for Expenses Section */
+    #expensesTable td input {
+        width: 95%; /* Applies only to inputs inside #expensesTable */
+        padding: 5px;
+        box-sizing: border-box;
+    }
 
-function computeDipstickClosing() {
-    // Premium Closing
-    const premium1Closing = parseFloat(document.querySelector('input[name="premium1Closing"]').value) || 0;
-    const premium2Closing = parseFloat(document.querySelector('input[name="premium2Closing"]').value) || 0;
-    const premiumClosing = premium1Closing + premium2Closing;
-    document.getElementById("premiumClosing").value = premiumClosing.toFixed(2);
+    #expensesTable button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-    // Unleaded Closing
-    const unleaded1Closing = parseFloat(document.querySelector('input[name="unleaded1Closing"]').value) || 0;
-    const unleaded2Closing = parseFloat(document.querySelector('input[name="unleaded2Closing"]').value) || 0;
-    const unleadedClosing = unleaded1Closing + unleaded2Closing;
-    document.getElementById("unleadedClosing").value = unleadedClosing.toFixed(2);
-
-    // Diesel Closing
-    const diesel1Closing = parseFloat(document.querySelector('input[name="diesel1Closing"]').value) || 0;
-    const diesel2Closing = parseFloat(document.querySelector('input[name="diesel2Closing"]').value) || 0;
-    const dieselClosing = diesel1Closing + diesel2Closing;
-    document.getElementById("dieselClosing").value = dieselClosing.toFixed(2);
-}
-
-// Add Event Listeners to recalculate when values in Electronic Pump Reading change
-document.querySelectorAll('#premium1Liters, #premium2Liters, #unleaded1Liters, #unleaded2Liters, #diesel1Liters, #diesel2Liters').forEach(input => {
-    input.addEventListener('input', computeDipstickFromPumpReadings);
-});
-</script>
-</body>
-</html>
+    #expensesTable button:hover {
+        background-color: #2980b9;
+    }
+</style>
