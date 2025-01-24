@@ -698,54 +698,170 @@ function addDiscountRow() {
 </script>           
 
 <script>
-    // Predefined users with roles
-    const users = {
-        admin: { password: "password123", role: "admin" },
-        user: { password: "user123", role: "user" },
-    };
+// Predefined users with roles
+const users = {
+    admin: { password: "password123", role: "admin" },
+    user: { password: "user123", role: "user" },
+};
 
-    let currentUserRole = null;
+let currentUserRole = null;
 
-    // Login validation function
-    function validateLogin() {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+// Login validation function
+function validateLogin() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-        if (users[username] && users[username].password === password) {
-            currentUserRole = users[username].role;
-            document.getElementById("loginScreen").style.display = "none";
-            document.getElementById("mainContent").style.display = "block";
-            applyUserPermissions();
-        } else {
-            alert("Invalid credentials. Please try again.");
-        }
+    if (users[username] && users[username].password === password) {
+        currentUserRole = users[username].role;
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+        applyUserPermissions();
+    } else {
+        alert("Invalid credentials. Please try again.");
+    }
+}
+
+// Apply role-based permissions
+function applyUserPermissions() {
+    // Fields that are password-protected for user users
+    const passwordProtectedSelectors = [
+        'input[data-column="PumpPrice"]',        // Pump Price column
+        'input[data-column="DiscountPerLiter"]', // Discount Per Liter column
+        'input[data-column="PODiscount"]'        // Discount column in Purchase Order section
+    ];
+
+    // Fields that must always remain readonly (locked for all users)
+    const alwaysReadonlySelectors = [
+        'input[name$="Liters"]',    // Liters Sold column
+        'input[name$="Sales"]',     // Total Sales column
+        '#totalExpenses',           // Total Expenses
+        'input[name$="Amount"]',    // Purchase Amount column
+        'input[name$="Total"]',     // Total Discount column
+        '#premiumTotalLitersSold',  // Dipstick Total Liters Sold
+        '#unleadedTotalLitersSold',
+        '#dieselTotalLitersSold',
+        '#cashBreakdownTotal',      // Total Cash
+        '#summaryFuelSales',
+        '#summaryExpenses',
+        '#summaryDiscount',
+        '#summaryPO',
+        '#summaryCash',
+        '#shortOver'
+    ];
+
+    // Lock always-readonly fields (no password handling)
+    lockAlwaysReadonlyFields(alwaysReadonlySelectors);
+
+    if (currentUserRole === "user") {
+        console.log("Applying restrictions for regular user...");
+        // Lock password-protected fields and attach password handler for user role
+        restrictFields(passwordProtectedSelectors, true);
     }
 
-    // Apply role-based permissions
-    function applyUserPermissions() {
-        if (currentUserRole === "user") {
-            console.log("Applying restrictions for user...");
-            restrictFields('input[data-column="PumpPrice"]'); // Restrict Pump Price column
-            restrictFields('input[data-column="DiscountPerLiter"]'); // Restrict Discount Per Liter column
-            restrictFields('input[data-column="PODiscount"]')
-        } else if (currentUserRole === "admin") {
-            console.log("Admin logged in. All fields are editable.");
-            // Admin: Ensure all fields are editable
-            document.querySelectorAll("input").forEach(input => {
-                input.removeAttribute("readonly");
-                input.style.backgroundColor = "#fff";
-            });
-        }
+    if (currentUserRole === "admin") {
+        console.log("Admin logged in...");
+        // Unlock admin-editable fields
+        allowFields(passwordProtectedSelectors);
     }
+}
 
-    // Restrict fields and attach password protection
-    function restrictFields(selector) {
+// Lock always-readonly fields (no password modal)
+function lockAlwaysReadonlyFields(selectors) {
+    selectors.forEach(selector => {
         document.querySelectorAll(selector).forEach(field => {
             field.setAttribute("readonly", true);
-            field.style.backgroundColor = "#e9ecef";
-            field.addEventListener("focus", requestPasswordHandler);
+            field.style.backgroundColor = "#f2f2f2"; // Grey background for readonly fields
+            field.style.cursor = "not-allowed"; // Non-editable cursor
+            field.removeEventListener("focus", requestPasswordHandler); // Ensure no password handler is attached
         });
+    });
+}
+
+// Request password and unlock the entire column
+function requestPasswordForColumn(field) {
+    const column = field.getAttribute("data-column");
+    const passwordModal = document.getElementById("passwordModal");
+    const passwordInput = document.getElementById("passwordInput");
+    const passwordSubmit = document.getElementById("passwordSubmit");
+    const passwordCancel = document.getElementById("passwordCancel");
+
+    // Show the modal
+    passwordModal.style.display = "flex";
+
+    // Handle submit button click
+    passwordSubmit.onclick = function () {
+        const enteredPassword = passwordInput.value;
+
+        if (enteredPassword === users.admin.password) {
+            // Unlock the column if the password is correct
+            document.querySelectorAll(`input[data-column="${column}"]`).forEach(input => {
+                input.removeAttribute("readonly");
+                input.style.backgroundColor = "#fff";
+                input.removeEventListener("focus", requestPasswordHandler); // Remove the password handler
+            });
+
+            alert(`Column "${column}" unlocked. You can now edit it.`);
+        } else {
+            alert("Incorrect password. You cannot edit this column.");
+        }
+
+        // Clear the input field and hide the modal
+        passwordInput.value = "";
+        passwordModal.style.display = "none";
+
+        // Remove focus from the field to prevent looping
+        field.blur();
+    };
+
+    // Handle cancel button click
+    passwordCancel.onclick = function () {
+        passwordInput.value = "";
+        passwordModal.style.display = "none";
+        field.blur();
+    };
+}
+
+// Focus event handler
+function requestPasswordHandler(event) {
+    requestPasswordForColumn(event.target);
+}
+
+// Restrict fields and attach password protection
+function restrictFields(selectors, isPasswordProtected = false) {
+    selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(field => {
+            field.setAttribute("readonly", true);
+            field.style.backgroundColor = "#f2f2f2"; // Grey background for readonly fields
+            field.style.cursor = "not-allowed"; // Non-editable cursor
+
+            // Attach password protection for password-protected fields (user role only)
+            if (isPasswordProtected && currentUserRole === "user") {
+                field.addEventListener("focus", requestPasswordHandler);
+            } else {
+                field.removeEventListener("focus", requestPasswordHandler); // Ensure no password handler is attached
+            }
+        });
+    });
+}
+
+// Allow editable fields
+function allowFields(selectors) {
+    selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(field => {
+            field.removeAttribute("readonly");
+            field.style.backgroundColor = "#fff"; // White background for editable fields
+            field.style.cursor = "text"; // Default cursor for editable fields
+        });
+    });
+}
+
+// Attach Enter key functionality for login
+document.getElementById("loginForm").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        validateLogin();
     }
+});
 
 // Request password and unlock the entire column
 function requestPasswordForColumn(field) {
