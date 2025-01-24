@@ -514,6 +514,7 @@ table td:first-child { /* First column cells */
         </tr>
     </tfoot>
             </table>
+            
 
 <div class="section-title">Dipstick</div>
 <table>
@@ -976,11 +977,17 @@ function restrictFields(selector) {
                     e.querySelector('input[name="discountTotal[]"]').value = (t * n).toFixed(2), updateDiscountSummary()
                 }
 
-                function updateDiscountSummary() {
-                    var e = document.getElementById("totalDiscount"),
-                        t = Array.from(document.querySelectorAll('input[name="discountTotal[]"]')).reduce((e, t) => e + (parseFloat(t.value) || 0), 0);
-                    e.value = t.toFixed(2)
-                }
+ function updateDiscountSummary() {
+    const totalDiscount = Array.from(document.querySelectorAll('input[name="discountTotal[]"]')).reduce((sum, input) => {
+        return sum + (parseFloat(input.value) || 0);
+    }, 0);
+
+    document.getElementById("totalDiscount").value = totalDiscount.toFixed(2);
+
+    // Update Summary
+    updateSummary();
+}
+
             </script>
             
             <div class="section-title">Purchase Order</div>
@@ -1085,6 +1092,9 @@ function addPurchaseOrderRow() {
         var totalAmount = Array.from(document.querySelectorAll('input[name="poAmount[]"]'))
             .reduce((sum, amountInput) => sum + (parseFloat(amountInput.value) || 0), 0);
         totalAmountField.value = totalAmount.toFixed(2);
+        
+            // Update Summary
+    updateSummary();
     }
 </script>
 <div class="section-title">Total Cash, Safe Drop, and Summary</div>
@@ -1263,6 +1273,9 @@ function updateCashBreakdown() {
 
     // Update the total
     document.getElementById("cashBreakdownTotal").value = total.toFixed(2);
+    
+        // Update Summary
+    updateSummary();
 }
 
 function addSafeDropRow() {
@@ -1361,6 +1374,9 @@ function updateFuelSalesTotal() {
     }, 0);
 
     document.getElementById("totalFuelSales").value = totalSales.toFixed(2);
+    
+        // Update Summary
+    updateSummary();
 }
     </script>
     
@@ -1387,7 +1403,39 @@ function computeDipstickFromPumpReadings() {
     document.getElementById("dieselTotalLitersSold").value = dieselTotal.toFixed(2);
 }
 
+function updateSummary() {
+    // Fetch totals from respective sections
+    const totalFuelSales = parseFloat(document.getElementById("totalFuelSales").value) || 0;
+    const totalExpenses = parseFloat(document.getElementById("totalExpenses").value) || 0;
+    const totalDiscount = parseFloat(document.getElementById("totalDiscount").value) || 0;
+    const totalPO = parseFloat(document.getElementById("poTotalAmount").value) || 0;
+    const totalCash = parseFloat(document.getElementById("cashBreakdownTotal").value) || 0;
 
+    // Update Summary Section fields
+    document.getElementById("summaryFuelSales").value = totalFuelSales.toFixed(2);
+    document.getElementById("summaryExpenses").value = totalExpenses.toFixed(2);
+    document.getElementById("summaryDiscount").value = totalDiscount.toFixed(2);
+    document.getElementById("summaryPO").value = totalPO.toFixed(2);
+    document.getElementById("summaryCash").value = totalCash.toFixed(2);
+
+    // Recalculate Short (-) or Over (+)
+    updateShortOver();
+}
+
+function updateShortOver() {
+    // Get values from the summary section
+    const totalFuelSales = parseFloat(document.getElementById("summaryFuelSales").value) || 0;
+    const totalExpenses = parseFloat(document.getElementById("summaryExpenses").value) || 0;
+    const totalDiscount = parseFloat(document.getElementById("summaryDiscount").value) || 0;
+    const totalPO = parseFloat(document.getElementById("summaryPO").value) || 0;
+    const totalCash = parseFloat(document.getElementById("summaryCash").value) || 0;
+
+    // Compute Short (-) or Over (+)
+    const shortOver = totalCash - (totalFuelSales - totalExpenses - totalDiscount - totalPO);
+
+    // Update the Short/Over field
+    document.getElementById("shortOver").value = shortOver.toFixed(2);
+}
 
 //function computeDipstickClosing() {
 //    // Premium Closing
@@ -1419,16 +1467,19 @@ document.querySelectorAll('#premium1Liters, #premium2Liters, #unleaded1Liters, #
 
     <script>
         // Function to update the total expenses
-        function updateTotalExpenses() {
-            const expenseAmounts = document.querySelectorAll('input[name="expensesAmount[]"]');
-            let total = 0;
+function updateTotalExpenses() {
+    const expenseAmounts = document.querySelectorAll('input[name="expensesAmount[]"]');
+    let total = 0;
 
-            expenseAmounts.forEach(input => {
-                total += parseFloat(input.value) || 0;
-            });
+    expenseAmounts.forEach(input => {
+        total += parseFloat(input.value) || 0;
+    });
 
-            document.getElementById("totalExpenses").value = total.toFixed(2);
-        }
+    document.getElementById("totalExpenses").value = total.toFixed(2);
+
+    // Update Summary
+    updateSummary();
+}
 
         // Function to add a new expense row dynamically
         function addExpenseRow() {
