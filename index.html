@@ -1,3 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gas Station Report</title>
+    <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore-compat.js"></script>
+<style>
+    input:read-only {
+        background-color: #f2f2f2; /* Light gray shade */
+        color: #333; /* Optional: Set a consistent text color */
+        border: 1px solid #ddd; /* Optional: Add a border for consistency */
+        cursor: not-allowed; /* Change the cursor to indicate the field is not editable */
+    }
+</style>    
+<style>
+    button[type="submit"]:hover {
+        background-color: #c0392b; /* Darker red on hover */
+    }
+</style>
 <style>
     /* General Body Styles */
     body {
@@ -142,7 +164,8 @@
     td {
         border: 1px solid #ddd;
         padding: 8px;
-        text-align: left;
+        text-align: center; /* Center-align content horizontally */
+        vertical-align: middle; /* Center-align content vertically */
         font-size: 14px;
     }
 
@@ -155,15 +178,18 @@
 
     td input,
     td select {
-        margin: 0;
-        width: 100%; /* Ensure inputs stretch to the full width of the cell */
+        margin: 0 auto; /* Center the input fields horizontally */
+        width: 90%; /* Ensure inputs stretch to 90% of the cell width */
         padding: 8px;
         border: 1px solid #ddd;
         border-radius: 5px;
         box-sizing: border-box;
         font-size: 14px;
+        text-align: center; /* Center the text inside the input fields */
+        display: block; /* Allow centering using margin auto */
     }
 
+    /* Flex Row Styling */
     .flex-row {
         display: flex;
         gap: 20px;
@@ -173,6 +199,7 @@
         flex: 1;
     }
 
+    /* Form Footer Styling */
     .form-footer {
         text-align: center;
         margin-top: 20px;
@@ -232,4 +259,1126 @@
     #expensesTable button:hover {
         background-color: #2980b9;
     }
+
+    /* Discount Table Specific Styling */
+    #discountTable th,
+    #discountTable td {
+        text-align: center; /* Center-align content horizontally */
+        vertical-align: middle; /* Center-align content vertically */
+    }
+
+    #discountTable input[type="text"],
+    #discountTable input[type="number"] {
+        margin: 0 auto; /* Center horizontally */
+        text-align: center; /* Center text inside input */
+        display: block; /* Ensure proper block behavior for alignment */
+        width: 90%; /* Adjust width to fit within the cell */
+        padding: 5px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    #discountTable input[type="text"]:focus,
+    #discountTable input[type="number"]:focus {
+        outline: none;
+        border: 1px solid #3498db;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    }
+
+    /* General input field styling */
+    input[type="text"],
+    input[type="number"],
+    input[type="datetime-local"],
+    select {
+        height: 35px; /* Ensure consistent height for all input fields */
+        padding: 5px 10px; /* Consistent padding inside the fields */
+        margin: 0; /* Remove margin for consistency */
+        border: 1px solid #ddd; /* Standard border for all inputs */
+        border-radius: 5px; /* Rounded corners for consistency */
+        box-sizing: border-box; /* Include padding and border in width */
+        font-size: 14px; /* Consistent font size across fields */
+        line-height: 1.2; /* Align text vertically in input fields */
+    }
+
+    /* Table-specific input styles */
+    table input[type="text"],
+    table input[type="number"] {
+        width: 90%; /* Ensure inputs do not exceed cell width */
+        text-align: left; /* Align text to the left for readability */
+        display: block; /* Ensure proper block behavior */
+        margin: auto; /* Center-align within cells */
+    }
+
+    /* Ensure table cells have consistent height and vertical alignment */
+    table th,
+    table td {
+        vertical-align: middle; /* Vertically center align content */
+        padding: 10px; /* Add consistent padding */
+    }
+
+    /* Adjust input fields in "Expenses" table */
+    #expensesTable input {
+        width: 95%; /* Ensure inputs fill the available cell space */
+    }
+
+    /* Adjust input fields in "Purchase Order" table */
+    #purchaseOrderTable input {
+        width: 95%; /* Standardize input width */
+    }
+
+    /* Focus state for all inputs */
+    input:focus {
+        outline: none;
+        border: 1px solid #3498db; /* Highlight with blue border */
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Subtle shadow for focus */
+    }
+    
+    /* Adjust the width of the Pump column */
+table th:first-child, /* First column in the table */
+table td:first-child { /* First column cells */
+    width: 20%; /* Set a wider column for Pump names */
+    text-align: left; /* Align text to the left for readability */
+}
+
+#passwordModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+#passwordModal > div {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+}
+
+#passwordModal input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#passwordModal button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#passwordModal button#passwordSubmit {
+    background-color: #3498db;
+    color: white;
+}
+
+#passwordModal button#passwordCancel {
+    background-color: #e74c3c;
+    color: white;
+    margin-left: 10px;
+}
+
 </style>
+
+</head>
+
+<body>
+<div id="passwordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; width: 300px;">
+        <h3 style="margin-bottom: 15px;">Enter Admin Password</h3>
+        <input id="passwordInput" type="password" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+        <div>
+            <button id="passwordSubmit" style="padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+            <button id="passwordCancel" style="padding: 10px 20px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="loginScreen">
+    <form id="loginForm">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="button" onclick="validateLogin()">Login</button>
+        <p id="loginError" style="color:red; display:none">Invalid credentials. Try again.</p>
+    </form>
+</div>
+<div id="mainContent" style="display: none;">
+    <div class="form-container">
+        <form id="gasStationForm">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:15px">
+                <div style="flex:1">
+                    <p style="margin:0;font-size:16px;font-weight:700;color:red">RED STAR GAS STATION</p>
+                    <p style="margin:0;font-size:14px;color:#34495e">BRGY PEMIENTA UMINGAN PANGASINAN<br>CFI NO 0922875-1312</p>
+                </div>
+                <div style="flex:1">
+                    <div style="display:flex;flex-direction:column;gap:10px">
+                        <div style="display:flex;gap:10px"><label for="crewName" style="flex:0 0 120px;font-weight:700">Crew Name:</label> <input type="text" id="crewName" name="crewName" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
+                        <div style="display:flex;gap:10px"><label for="cashierName" style="flex:0 0 120px;font-weight:700">Cashier:</label> <input type="text" id="cashierName" name="cashierName" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
+                        <div style="display:flex;gap:10px"><label for="shiftTime" style="flex:0 0 120px;font-weight:700">Shift (Time):</label> <select id="shiftTime" name="shiftTime" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px">
+                                <option value="" disabled="disabled" selected="selected">Select Shift</option>
+                                <option value="06:00am to 15:00pm">06:00am to 15:00pm</option>
+                                <option value="14:00pm to 22:00pm">14:00pm to 22:00pm</option>
+                                <option value="21:00pm to 06:00am">21:00pm to 06:00am</option>
+                            </select></div>
+                        <div style="display:flex;gap:10px"><label for="reportDate" style="flex:0 0 120px;font-weight:700">Date:</label> <input type="date" id="reportDate" name="reportDate" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-title">Electronic Reading</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pump</th>
+                        <th>Opening</th>
+                        <th>Closing</th>
+                        <th>Calibration</th>
+                        <th>Liters Sold</th>
+                        <th>Pump Price</th>
+                        <th>Total Sales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+    <td>Premium 1</td>
+    <td><input type="number" name="premium1Opening" onchange="updateValues(this)"></td>
+    <td><input type="number" name="premium1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
+    <td><input type="number" name="premium1Calibration" onchange="updateValues(this)"></td>
+    <td><input type="number" name="premium1Liters" readonly="readonly"></td>
+    <td><input type="number" name="premium1Price" data-column="PumpPrice" id="premium1Price" readonly onchange="updateValues(this)"></td>
+    <td><input type="number" name="premium1Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
+</tr>
+<tr>
+    <td>Premium 2</td>
+    <td><input type="number" name="premium2Opening" onchange="updateValues(this)"></td>
+    <td><input type="number" name="premium2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
+    <td><input type="number" name="premium2Calibration" onchange="updateValues(this)"></td>
+    <td><input type="number" name="premium2Liters" readonly="readonly"></td>
+    <td><input type="number" name="premium2Price" data-column="PumpPrice" readonly id="premium2Price" onchange="updateValues(this)"></td>
+    <td><input type="number" name="premium2Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
+</tr>
+<tr>
+    <td>Unleaded 1</td>
+    <td><input type="number" name="unleaded1Opening" onchange="updateValues(this)"></td>
+    <td><input type="number" name="unleaded1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
+    <td><input type="number" name="unleaded1Calibration" onchange="updateValues(this)"></td>
+    <td><input type="number" name="unleaded1Liters" readonly="readonly"></td>
+    <td><input type="number" name="unleaded1Price" data-column="PumpPrice" readonly id="unleaded1Price" onchange="updateValues(this)"></td>
+    <td><input type="number" name="unleaded1Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
+</tr>
+<tr>
+    <td>Unleaded 2</td>
+    <td><input type="number" name="unleaded2Opening" onchange="updateValues(this)"></td>
+    <td><input type="number" name="unleaded2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
+    <td><input type="number" name="unleaded2Calibration" onchange="updateValues(this)"></td>
+    <td><input type="number" name="unleaded2Liters" readonly="readonly"></td>
+    <td><input type="number" name="unleaded2Price" data-column="PumpPrice" readonly id="unleaded2Price" onchange="updateValues(this)"></td>
+    <td><input type="number" name="unleaded2Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
+</tr>
+<tr>
+    <td>Diesel 1</td>
+    <td><input type="number" name="diesel1Opening" onchange="updateValues(this)"></td>
+    <td><input type="number" name="diesel1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
+    <td><input type="number" name="diesel1Calibration" onchange="updateValues(this)"></td>
+    <td><input type="number" name="diesel1Liters" readonly="readonly"></td>
+    <td><input type="number" name="diesel1Price" data-column="PumpPrice" readonly id="diesel1Price" onchange="updateValues(this)"></td>
+    <td><input type="number" name="diesel1Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
+</tr>
+<tr>
+    <td>Diesel 2</td>
+    <td><input type="number" name="diesel2Opening" onchange="updateValues(this)"></td>
+    <td><input type="number" name="diesel2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
+    <td><input type="number" name="diesel2Calibration" onchange="updateValues(this)"></td>
+    <td><input type="number" name="diesel2Liters" readonly="readonly"></td>
+    <td><input type="number" name="diesel2Price" data-column="PumpPrice" readonly id="diesel2Price" onchange="updateValues(this)"></td>
+    <td><input type="number" name="diesel2Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
+</tr>
+
+                </tbody>
+                    <tfoot>
+        <tr>
+            <td colspan="6" style="text-align: right; font-weight: bold;">Total Fuel Sales</td>
+            <td><input type="number" id="totalFuelSales" name="totalFuelSales" readonly style="width: 90%; text-align: center; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+        </tr>
+    </tfoot>
+            </table>
+
+<div class="section-title">Dipstick</div>
+<table>
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Opening</th>
+            <th>Total Liters Sold</th>
+            <th>Delivery</th>
+            <th>Closing</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Premium</td>
+            <td><input type="number" id="premiumOpening"></td>
+            <td><input type="number" id="premiumTotalLitersSold" readonly></td>
+            <td><input type="number" id="premiumDelivery"></td>
+            <td><input type="number" id="premiumClosing"></td>
+        </tr>
+        <tr>
+            <td>Unleaded</td>
+            <td><input type="number" id="unleadedOpening"></td>
+            <td><input type="number" id="unleadedTotalLitersSold" readonly></td>
+            <td><input type="number" id="unleadedDelivery"></td>
+            <td><input type="number" id="unleadedClosing"></td>
+        </tr>
+        <tr>
+            <td>Diesel</td>
+            <td><input type="number" id="dieselOpening"></td>
+            <td><input type="number" id="dieselTotalLitersSold" readonly></td>
+            <td><input type="number" id="dieselDelivery"></td>
+            <td><input type="number" id="dieselClosing"></td>
+        </tr>
+    </tbody>
+</table>
+
+
+            <div class="section-title">Product Delivery Details</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Date & Time</th>
+                        <th>Product</th>
+                        <th>Before</th>
+                        <th>After</th>
+                        <th style="width: 80px;">Total Received</th>
+                        <th style="width: 100px">Plate Number</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="datetime-local" name="premiumDateTime" style="width:200px"></td>
+                        <td>Premium</td>
+                        <td><input type="number" name="premiumBefore" style="width:60px"></td>
+                        <td><input type="number" name="premiumAfter" style="width:60px"></td>
+                        <td><input type="number" name="premiumTotalReceived" style="width:60px"></td>
+                        <td>DR Number</td>
+                        <td><input type="number" name="DRNumber" style="width:100px"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="datetime-local" name="unleadedDateTime" style="width:200px"></td>
+                        <td>Unleaded</td>
+                        <td><input type="number" name="unleadedBefore" style="width:60px"></td>
+                        <td><input type="number" name="unleadedAfter" style="width:60px"></td>
+                        <td><input type="number" name="unleadedTotalReceived" style="width:60px"></td>
+                        <td>Delivered By</td>
+                        <td><input type="text" name="DeliveredBy" style="width:100px"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="datetime-local" name="dieselDateTime" style="width:200px"></td>
+                        <td>Diesel</td>
+                        <td><input type="number" name="dieselBefore" style="width:60px"></td>
+                        <td><input type="number" name="dieselAfter" style="width:60px"></td>
+                        <td><input type="number" name="dieselTotalReceived" style="width:60px"></td>
+                        <td>Received By</td>
+                        <td><input type="text" name="ReceivedBy" style="width:100px"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        <!-- Expenses Section -->
+      <div class="section-title">Expenses</div>
+<table id="expensesTable" style="width: 100%;">
+    <thead>
+        <tr>
+            <th style="width: 70%;">Particulars</th>
+            <th style="width: 30%;">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="text" name="expensesParticulars[]" style="width: 95%;"></td>
+            <td><input type="number" name="expensesAmount[]" style="width: 80px;" oninput="updateTotalExpenses()"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="expensesParticulars[]" style="width: 95%;"></td>
+            <td><input type="number" name="expensesAmount[]" style="width: 80px;" oninput="updateTotalExpenses()"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="expensesParticulars[]" style="width: 95%;"></td>
+            <td><input type="number" name="expensesAmount[]" style="width: 80px;" oninput="updateTotalExpenses()"></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td style="text-align: right; font-weight: bold;">Total Expenses</td>
+            <td><input type="number" id="totalExpenses" readonly style="width: 80px; background-color: #e9ecef;"></td>
+        </tr>
+    </tfoot>
+</table>
+<button type="button" onclick="addExpenseRow()">+ Add Expense</button>
+    
+            <div class="section-title">Discount</div>
+            <table id="discountTable">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;width:25%;padding:10px;background-color:#f2f2f2">Client Name</th>
+                        <th style="text-align:left;width:20%;padding:10px;background-color:#f2f2f2">Product</th>
+                        <th style="text-align:left;width:15%;padding:10px;background-color:#f2f2f2">Liters</th>
+                        <th style="text-align:left;width:20%;padding:10px;background-color:#f2f2f2">Discount per Liter</th>
+                        <th style="text-align:left;width:20%;padding:10px;background-color:#f2f2f2">Total Discount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="discountClientName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="discountProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="number" name="discountLiters[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
+                        <td><input type="number" name="discountPerLiter[]" data-column="DiscountPerLiter" readonly id="discountPerLiter1" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
+                        <td><input type="number" name="discountTotal[]" readonly="readonly" style="width:90%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="discountClientName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="discountProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="number" name="discountLiters[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
+                        <td><input type="number" name="discountPerLiter[]" data-column="DiscountPerLiter" readonly id="discountPerLiter[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
+                        <td><input type="number" name="discountTotal[]" readonly="readonly" style="width:90%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="discountClientName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="discountProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="number" name="discountLiters[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
+                        <td><input type="number" name="discountPerLiter[]" data-column="DiscountPerLiter" readonly id="discountPerLiter[]" style="width:90%;padding:5px;box-sizing:border-box" onchange="updateTotalDiscount(this)"></td>
+                        <td><input type="number" name="discountTotal[]" readonly="readonly" style="width:90%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" style="text-align:right;font-weight:700;padding:10px">Total Discount</td>
+                        <td><input type="number" id="totalDiscount" readonly="readonly" style="width:90%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                </tfoot>
+            </table><button type="button" onclick="addDiscountRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Discount</button>
+           
+           <script>
+           let discountRowCounter = 1; // Counter to track the number of rows
+
+function addDiscountRow() {
+    const discountTableBody = document.getElementById("discountTable").getElementsByTagName("tbody")[0];
+    const newRow = document.createElement("tr");
+
+    newRow.innerHTML = `
+        <td><input type="text" name="discountClientName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+        <td><input type="text" name="discountProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+        <td><input type="number" name="discountLiters[]" style="width: 90%; padding: 5px; box-sizing: border-box;"></td>
+        <td>
+            <input type="number" name="discountPerLiter[]" data-column="DiscountPerLiter" style="width: 90%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;" readonly>
+        </td>
+        <td><input type="number" name="discountTotal[]" readonly style="width: 90%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    `;
+
+    discountTableBody.appendChild(newRow);
+
+    // Apply restrictions to the new row if the current user is a regular user
+    if (currentUserRole === "user") {
+        restrictFields('input[data-column="DiscountPerLiter"]');
+    }
+}
+
+</script>           
+
+<script>
+    // Predefined users with roles
+    const users = {
+        admin: { password: "password123", role: "admin" },
+        user: { password: "user123", role: "user" },
+    };
+
+    let currentUserRole = null;
+
+    // Login validation function
+    function validateLogin() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (users[username] && users[username].password === password) {
+            currentUserRole = users[username].role;
+            document.getElementById("loginScreen").style.display = "none";
+            document.getElementById("mainContent").style.display = "block";
+            applyUserPermissions();
+        } else {
+            alert("Invalid credentials. Please try again.");
+        }
+    }
+
+    // Apply role-based permissions
+    function applyUserPermissions() {
+        if (currentUserRole === "user") {
+            console.log("Applying restrictions for user...");
+            restrictFields('input[data-column="PumpPrice"]'); // Restrict Pump Price column
+            restrictFields('input[data-column="DiscountPerLiter"]'); // Restrict Discount Per Liter column
+            restrictFields('input[data-column="PODiscount"]')
+        } else if (currentUserRole === "admin") {
+            console.log("Admin logged in. All fields are editable.");
+            // Admin: Ensure all fields are editable
+            document.querySelectorAll("input").forEach(input => {
+                input.removeAttribute("readonly");
+                input.style.backgroundColor = "#fff";
+            });
+        }
+    }
+
+    // Restrict fields and attach password protection
+    function restrictFields(selector) {
+        document.querySelectorAll(selector).forEach(field => {
+            field.setAttribute("readonly", true);
+            field.style.backgroundColor = "#e9ecef";
+            field.addEventListener("focus", requestPasswordHandler);
+        });
+    }
+
+// Request password and unlock the entire column
+function requestPasswordForColumn(field) {
+    const column = field.getAttribute("data-column");
+    const passwordModal = document.getElementById("passwordModal");
+    const passwordInput = document.getElementById("passwordInput");
+    const passwordSubmit = document.getElementById("passwordSubmit");
+    const passwordCancel = document.getElementById("passwordCancel");
+
+    // Show the modal
+    passwordModal.style.display = "flex";
+
+    // Handle submit button click
+    passwordSubmit.onclick = function () {
+        const enteredPassword = passwordInput.value;
+
+        if (enteredPassword === users.admin.password) {
+            // Unlock the column if the password is correct
+            document.querySelectorAll(`input[data-column="${column}"]`).forEach(input => {
+                input.removeAttribute("readonly");
+                input.style.backgroundColor = "#fff";
+                input.removeEventListener("focus", requestPasswordHandler);
+            });
+
+            alert(`Column "${column}" unlocked. You can now edit it.`);
+        } else {
+            alert("Incorrect password. You cannot edit this column.");
+        }
+
+        // Clear the input field and hide the modal
+        passwordInput.value = "";
+        passwordModal.style.display = "none";
+
+        // Remove focus from the field to prevent looping
+        field.blur();
+    };
+
+    // Handle cancel button click
+    passwordCancel.onclick = function () {
+        // Clear the input field and hide the modal
+        passwordInput.value = "";
+        passwordModal.style.display = "none";
+
+        // Remove focus from the field to prevent looping
+        field.blur();
+    };
+}
+
+// Focus event handler
+function requestPasswordHandler(event) {
+    requestPasswordForColumn(event.target);
+}
+
+// Restrict fields and attach password protection
+function restrictFields(selector) {
+    document.querySelectorAll(selector).forEach(field => {
+        field.setAttribute("readonly", true);
+        field.style.backgroundColor = "#e9ecef";
+        field.addEventListener("focus", requestPasswordHandler);
+    });
+}
+    // Attach Enter key functionality for login
+    document.getElementById("loginForm").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            validateLogin();
+        }
+    });
+
+    // Ensure dynamic restrictions are applied
+    function addDiscountRow() {
+        const discountTableBody = document.getElementById("discountTable").getElementsByTagName("tbody")[0];
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
+            <td><input type="text" name="discountClientName[]"></td>
+            <td><input type="text" name="discountProduct[]"></td>
+            <td><input type="number" name="discountLiters[]"></td>
+            <td><input type="number" name="discountPerLiter[]" readonly data-column="DiscountPerLiter"></td>
+            <td><input type="number" name="discountTotal[]" readonly></td>
+        `;
+        discountTableBody.appendChild(newRow);
+        addDynamicRestrictions();
+    }
+</script>
+    
+<script>
+                function addExpenseRow() {
+                    var e = document.getElementById("expensesTable").getElementsByTagName("tbody")[0],
+                        t = document.createElement("tr");
+                    t.innerHTML = `
+      <td><input type="text" name="expensesParticulars[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="number" name="expensesAmount[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+    `, e.appendChild(t)
+                }
+
+                function addDiscountRow() {
+                    var e = document.getElementById("discountTable").getElementsByTagName("tbody")[0],
+                        t = document.createElement("tr");
+                    t.innerHTML = `
+      <td><input type="text" name="discountClientName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="text" name="discountProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+      <td><input type="number" name="discountLiters[]" style="width: 90%; padding: 5px; box-sizing: border-box;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountPerLiter[]" style="width: 90%; padding: 5px; box-sizing: border-box;" onchange="updateTotalDiscount(this)"></td>
+      <td><input type="number" name="discountTotal[]" readonly style="width: 90%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    `, e.appendChild(t)
+                }
+
+                function updateTotalDiscount(e) {
+                    var e = e.closest("tr"),
+                        t = parseFloat(e.querySelector('input[name="discountLiters[]"]').value) || 0,
+                        n = parseFloat(e.querySelector('input[name="discountPerLiter[]"]').value) || 0;
+                    e.querySelector('input[name="discountTotal[]"]').value = (t * n).toFixed(2), updateDiscountSummary()
+                }
+
+                function updateDiscountSummary() {
+                    var e = document.getElementById("totalDiscount"),
+                        t = Array.from(document.querySelectorAll('input[name="discountTotal[]"]')).reduce((e, t) => e + (parseFloat(t.value) || 0), 0);
+                    e.value = t.toFixed(2)
+                }
+            </script>
+            
+            <div class="section-title">Purchase Order</div>
+            <table id="purchaseOrderTable" style="width:100%;border-collapse:collapse">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Customer's Name</th>
+                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Vehicle No.</th>
+                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">PO #</th>
+                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Product</th>
+                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Liters</th>
+                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Discount</th>
+                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
+                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" Onchange="updatePurchaseOrderTotal(this)"></td>
+                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
+                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" onchange="updatePurchaseOrderTotal(this)"></td>
+                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
+                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" onchange="updatePurchaseOrderTotal(this)"></td>
+                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
+                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" onchange="updatePurchaseOrderTotal(this)"></td>
+                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6" style="text-align:right;font-weight:700;padding:10px">Total</td>
+                        <td><input type="number" id="poTotalAmount" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
+                    </tr>
+                </tfoot>
+            </table><button type="button" onclick="addPurchaseOrderRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Purchase Order</button>
+<script>
+function addPurchaseOrderRow() {
+    const purchaseOrderTableBody = document.getElementById("purchaseOrderTable").getElementsByTagName("tbody")[0];
+    const newRow = document.createElement("tr");
+
+    newRow.innerHTML = `
+        <td><input type="text" name="poCustomerName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+        <td><input type="text" name="poVehicleNo[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+        <td><input type="text" name="poNumber[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+        <td><input type="text" name="poProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+        <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
+        <td>
+            <input type="number" name="poDiscount[]" data-column="PODiscount" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)">
+        </td>
+        <td><input type="number" name="poAmount[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+    `;
+
+    purchaseOrderTableBody.appendChild(newRow);
+
+    // Apply restrictions to newly added Discount fields if the user is not admin
+    if (currentUserRole === "user") {
+        restrictFields('input[data-column="PODiscount"]');
+    }
+}
+    function updatePurchaseOrderTotal(inputElement) {
+        // Get the row containing the changed input
+        var row = inputElement.closest("tr");
+
+        // Get the values of liters and discount
+        var liters = parseFloat(row.querySelector('input[name="poLiters[]"]').value) || 0;
+        var discount = parseFloat(row.querySelector('input[name="poDiscount[]"]').value) || 0;
+
+        // Calculate the amount
+        var amount = liters * discount;
+
+        // Update the amount field in the current row
+        var amountField = row.querySelector('input[name="poAmount[]"]');
+        amountField.value = amount.toFixed(2);
+
+        // Update the total amount at the bottom of the table
+        var totalAmountField = document.getElementById("poTotalAmount");
+        var totalAmount = Array.from(document.querySelectorAll('input[name="poAmount[]"]'))
+            .reduce((sum, amountInput) => sum + (parseFloat(amountInput.value) || 0), 0);
+        totalAmountField.value = totalAmount.toFixed(2);
+    }
+</script>
+<div class="section-title">Total Cash, Safe Drop, and Summary</div>
+<div class="flex-row" style="display: flex; gap: 20px;">
+
+    <!-- Cash Breakdown Column (40%) -->
+    <div style="flex: 4; width: 40%;">
+        <table id="cashBreakdownTable" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">Denomination</th>
+                    <th style="text-align: center;">No. of Pieces</th>
+                    <th style="text-align: center;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align: center;">1000</td>
+                    <td><input type="number" name="denomination1000Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination1000Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">500</td>
+                    <td><input type="number" name="denomination500Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination500Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">200</td>
+                    <td><input type="number" name="denomination200Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination200Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">100</td>
+                    <td><input type="number" name="denomination100Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination100Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">50</td>
+                    <td><input type="number" name="denomination50Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination50Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">20</td>
+                    <td><input type="number" name="denomination20Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination20Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">Coins 20</td>
+                    <td><input type="number" name="denominationCoins20Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denominationCoins20Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">10</td>
+                    <td><input type="number" name="denomination10Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination10Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">5</td>
+                    <td><input type="number" name="denomination5Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination5Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;">1</td>
+                    <td><input type="number" name="denomination1Pieces" oninput="updateCashBreakdown()" style="width: 90%; text-align: center;"></td>
+                    <td><input type="number" name="denomination1Amount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" style="text-align: right; font-weight: bold;">Total Cash</td>
+                    <td><input type="number" id="cashBreakdownTotal" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Safe Drop Column (30%) -->
+    <div style="flex: 3; width: 20%;">
+        <table id="safeDropTable" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">Safe Drop</th>
+                    <th style="text-align: center;">Received</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><input type="number" name="safeDropRow1" style="width: 75%; text-align: center;"></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><input type="number" name="safeDropRow2" style="width: 75%; text-align: center;"></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="number" name="safeDropRow3" style="width: 75%; text-align: center;"></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><input type="number" name="safeDropRow4" style="width: 9075%; text-align: center;"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" onclick="addSafeDropRow()" style="margin-top: 10px; padding: 8px 16px; font-size: 14px;">+ Add Safe Drop</button>
+    </div>
+
+    <!-- Summary Column (30%) -->
+    <div style="flex: 3; width: 40%;">
+        <table id="summaryTable" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Details</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Fuel Sales</td>
+                    <td><input type="number" id="summaryFuelSales" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td>Total Expenses</td>
+                    <td><input type="number" id="summaryExpenses" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td>Total Discount</td>
+                    <td><input type="number" id="summaryDiscount" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td>Total P.O.</td>
+                    <td><input type="number" id="summaryPO" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td>Total Cash</td>
+                    <td><input type="number" id="summaryCash" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+                <tr>
+                    <td>Short (-) or Over (+)</td>
+                    <td><input type="number" id="shortOver" readonly style="width: 90%; text-align: center; background-color: #f2f2f2;"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Submit Button -->
+<div style="text-align: center; margin-top: 20px;">
+    <button type="submit" style="padding: 10px 20px; font-size: 16px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">Submit Report</button>
+</div>      
+
+<script>
+
+function updateCashBreakdown() {
+    const denominations = [
+        { value: 1000, piecesField: 'denomination1000Pieces', amountField: 'denomination1000Amount' },
+        { value: 500, piecesField: 'denomination500Pieces', amountField: 'denomination500Amount' },
+        { value: 200, piecesField: 'denomination200Pieces', amountField: 'denomination200Amount' },
+        { value: 100, piecesField: 'denomination100Pieces', amountField: 'denomination100Amount' },
+        { value: 50, piecesField: 'denomination50Pieces', amountField: 'denomination50Amount' },
+        { value: 20, piecesField: 'denomination20Pieces', amountField: 'denomination20Amount' },
+        { value: 20, piecesField: 'denominationCoins20Pieces', amountField: 'denominationCoins20Amount' },
+        { value: 10, piecesField: 'denomination10Pieces', amountField: 'denomination10Amount' },
+        { value: 5, piecesField: 'denomination5Pieces', amountField: 'denomination5Amount' },
+        { value: 1, piecesField: 'denomination1Pieces', amountField: 'denomination1Amount' },
+    ];
+
+    let total = 0;
+
+    denominations.forEach(denomination => {
+        const pieces = parseFloat(document.querySelector(`input[name="${denomination.piecesField}"]`).value) || 0;
+        const amount = pieces * denomination.value;
+        document.querySelector(`input[name="${denomination.amountField}"]`).value = amount.toFixed(2);
+        total += amount;
+    });
+
+    // Update the total
+    document.getElementById("cashBreakdownTotal").value = total.toFixed(2);
+}
+
+function addSafeDropRow() {
+    const safeDropTableBody = document.getElementById("safeDropTable").getElementsByTagName("tbody")[0];
+    const rowCount = safeDropTableBody.rows.length + 1; // Calculate the next row number
+
+    const newRow = document.createElement("tr");
+
+    newRow.innerHTML = `
+        <td>${rowCount}</td>
+        <td><input type="number" name="safeDropRow${rowCount}" style="width: 75%; padding: 5px; box-sizing: border-box;"></td>
+    `;
+
+    safeDropTableBody.appendChild(newRow);
+}
+
+function updateSafeDropTotal() {
+    const safeDropAmounts = document.querySelectorAll('input[name="safeDropAmount[]"]');
+    const total = Array.from(safeDropAmounts).reduce((sum, input) => {
+        return sum + (parseFloat(input.value) || 0);
+    }, 0);
+
+    document.querySelector('input[name="safeDropTotal"]').value = total.toFixed(2);
+    updateShortOver(); // Recalculate Short/Over whenever Total Cash changes
+}
+
+function updateShortOver() {
+    // Get values from relevant input fields
+    const totalFuelSales = parseFloat(document.getElementById("totalFuelSales").value) || 0;
+    const totalExpenses = parseFloat(document.getElementById("totalExpenses").value) || 0;
+    const totalDiscount = parseFloat(document.getElementById("totalDiscount").value) || 0;
+    const totalPO = parseFloat(document.getElementById("totalPO").value) || 0;
+    const totalCash = parseFloat(document.getElementById("totalCash").value) || 0;
+
+    // Compute Short (-) or Over (+)
+    const shortOver = totalCash - (totalFuelSales - totalExpenses - totalDiscount - totalPO);
+
+    // Update the Short/Over field
+    document.getElementById("shortOver").value = shortOver.toFixed(2);
+}
+</script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOM fully loaded and parsed.");
+            firebase.initializeApp({
+                apiKey: "AIzaSyDs0nHtHiQOANohq2TBm_xXUJ8qRtRQQhs",
+                authDomain: "redstar-27bfa.firebaseapp.com",
+                projectId: "redstar-27bfa",
+                storageBucket: "redstar-27bfa.firebasestorage.app",
+                messagingSenderId: "863347286957",
+                appId: "1:863347286957:web:3e27391d7c0667174ef724",
+                measurementId: "G-WBM4JBV99F"
+            });
+            let r = firebase.firestore();
+            var e = document.getElementById("gasStationForm");
+            e ? (console.log("Form element found."), e.addEventListener("submit", async e => {
+                console.log("Submit event triggered."), e.preventDefault();
+                var t = new FormData(e.target),
+                    t = Object.fromEntries(t.entries());
+                console.log("Collected data:", t);
+                try {
+                    var o = await r.collection("gasStationReports").add(t);
+                    console.log("Document written with ID:", o.id), alert("Report submitted successfully! Document ID: " + o.id), e.target.reset()
+                } catch (e) {
+                    console.error("Error saving document:", e), alert("Failed to submit the report. Check console for details.")
+                }
+            })) : console.error("Form element not found.")
+        })
+    </script>
+    <script>
+function updateValues(input) {
+    const row = input.closest("tr");
+    const opening = parseFloat(row.querySelector('input[name$="Opening"]').value) || 0;
+    const closing = parseFloat(row.querySelector('input[name$="Closing"]').value) || 0;
+    const calibration = parseFloat(row.querySelector('input[name$="Calibration"]').value) || 0;
+    const price = parseFloat(row.querySelector('input[name$="Price"]').value) || 0;
+
+    // Calculate Liters Sold and Total Sales
+    const litersSold = closing - opening - calibration;
+    const totalSales = litersSold * price;
+
+    // Update Liters Sold and Total Sales fields
+    row.querySelector('input[name$="Liters"]').value = litersSold.toFixed(2);
+    row.querySelector('input[name$="Sales"]').value = totalSales.toFixed(2);
+
+    // Trigger Total Fuel Sales recalculation
+    updateFuelSalesTotal();
+}
+
+function updateFuelSalesTotal() {
+    const salesInputs = document.querySelectorAll('input[name$="Sales"]');
+    const totalSales = Array.from(salesInputs).reduce((sum, input) => {
+        const value = parseFloat(input.value) || 0;
+        return sum + value;
+    }, 0);
+
+    document.getElementById("totalFuelSales").value = totalSales.toFixed(2);
+}
+    </script>
+    
+ 
+    <script>
+    
+function computeDipstickFromPumpReadings() {
+    // Premium Total Liters Sold
+    const premium1Liters = parseFloat(document.querySelector('input[name="premium1Liters"]').value) || 0;
+    const premium2Liters = parseFloat(document.querySelector('input[name="premium2Liters"]').value) || 0;
+    const premiumTotal = premium1Liters + premium2Liters;
+    document.getElementById("premiumTotalLitersSold").value = premiumTotal.toFixed(2);
+
+    // Unleaded Total Liters Sold
+    const unleaded1Liters = parseFloat(document.querySelector('input[name="unleaded1Liters"]').value) || 0;
+    const unleaded2Liters = parseFloat(document.querySelector('input[name="unleaded2Liters"]').value) || 0;
+    const unleadedTotal = unleaded1Liters + unleaded2Liters;
+    document.getElementById("unleadedTotalLitersSold").value = unleadedTotal.toFixed(2);
+
+    // Diesel Total Liters Sold
+    const diesel1Liters = parseFloat(document.querySelector('input[name="diesel1Liters"]').value) || 0;
+    const diesel2Liters = parseFloat(document.querySelector('input[name="diesel2Liters"]').value) || 0;
+    const dieselTotal = diesel1Liters + diesel2Liters;
+    document.getElementById("dieselTotalLitersSold").value = dieselTotal.toFixed(2);
+}
+
+
+
+//function computeDipstickClosing() {
+//    // Premium Closing
+//   const premium1Closing = parseFloat(document.querySelector('input[name="premium1Closing"]').value) || 0;
+//    const premium2Closing = parseFloat(document.querySelector('input[name="premium2Closing"]').value) || 0;
+//    const premiumClosing = premium1Closing + premium2Closing;
+//    document.getElementById("premiumClosing").value = premiumClosing.toFixed(2);
+
+    // Unleaded Closing
+//    const unleaded1Closing = parseFloat(document.querySelector('input[name="unleaded1Closing"]').value) || 0;
+//    const unleaded2Closing = parseFloat(document.querySelector('input[name="unleaded2Closing"]').value) || 0;
+//    const unleadedClosing = unleaded1Closing + unleaded2Closing;
+//    document.getElementById("unleadedClosing").value = unleadedClosing.toFixed(2);
+
+    // Diesel Closing
+//    const diesel1Closing = parseFloat(document.querySelector('input[name="diesel1Closing"]').value) || 0;
+//    const diesel2Closing = parseFloat(document.querySelector('input[name="diesel2Closing"]').value) || 0;
+//    const dieselClosing = diesel1Closing + diesel2Closing;
+//    document.getElementById("dieselClosing").value = dieselClosing.toFixed(2);
+// }
+
+
+
+// Add Event Listeners to recalculate when values in Electronic Pump Reading change
+document.querySelectorAll('#premium1Liters, #premium2Liters, #unleaded1Liters, #unleaded2Liters, #diesel1Liters, #diesel2Liters').forEach(input => {
+    input.addEventListener('input', computeDipstickFromPumpReadings);
+});
+</script>
+
+    <script>
+        // Function to update the total expenses
+        function updateTotalExpenses() {
+            const expenseAmounts = document.querySelectorAll('input[name="expensesAmount[]"]');
+            let total = 0;
+
+            expenseAmounts.forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+
+            document.getElementById("totalExpenses").value = total.toFixed(2);
+        }
+
+        // Function to add a new expense row dynamically
+        function addExpenseRow() {
+            const expensesTable = document.getElementById("expensesTable").getElementsByTagName("tbody")[0];
+            const newRow = document.createElement("tr");
+
+            newRow.innerHTML = `
+                <td><input type="text" name="expensesParticulars[]"></td>
+                <td><input type="number" name="expensesAmount[]" oninput="updateTotalExpenses()"></td>
+            `;
+
+            expensesTable.appendChild(newRow);
+        }
+    </script>
+</div>
+    <script>
+        // Prevent form submission on Enter key press
+        document.getElementById("loginForm").addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                // Prevent form submission when Enter is pressed
+                event.preventDefault();
+
+                // Optionally, move to the next input
+                const formElements = Array.from(this.elements);
+                const currentIndex = formElements.indexOf(document.activeElement);
+
+                if (currentIndex !== -1 && formElements[currentIndex + 1]) {
+                    formElements[currentIndex + 1].focus(); // Move to the next input
+                }
+            }
+        });
+    </script>
+    
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Prevent Enter key from submitting all forms except for #loginForm
+        document.querySelectorAll("form").forEach(form => {
+            form.addEventListener("keydown", function (event) {
+                // Check if the Enter key is pressed
+                if (event.key === "Enter") {
+                    // If it's the login form, allow Enter to submit
+                    if (this.id === "loginForm") {
+                        return;
+                    }
+                    // Prevent Enter from submitting any other form
+                    event.preventDefault();
+
+                    // Optionally, focus on the next input in the current form
+                    const formElements = Array.from(this.elements);
+                    const currentIndex = formElements.indexOf(document.activeElement);
+                    if (currentIndex !== -1 && formElements[currentIndex + 1]) {
+                        formElements[currentIndex + 1].focus(); // Move focus to the next input
+                    }
+                }
+            });
+        });
+
+        // Add step="0.01" to all <input type="number"> elements
+        const numberInputs = document.querySelectorAll('input[type="number"]');
+        numberInputs.forEach(input => {
+            input.setAttribute("step", "0.01");
+        });
+
+        console.log(`Updated ${numberInputs.length} number input fields to accept decimals.`);
+    });
+</script>
+
+</body>
+</html>
