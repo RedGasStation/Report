@@ -456,7 +456,7 @@ table td:first-child { /* First column cells */
     <td><input type="number" name="premium1Opening" onchange="updateValues(this)"></td>
     <td><input type="number" name="premium1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
     <td><input type="number" name="premium1Calibration" onchange="updateValues(this)"></td>
-    <td><input type="number" name="premium1Liters" readonly="readonly"></td>
+    <td><input type="number" name="premium1Liters" onchange="computeDipstickFromPumpReadings()" readonly="readonly"></td>
     <td><input type="number" name="premium1Price" data-column="PumpPrice" id="premium1Price" readonly onchange="updateValues(this)"></td>
     <td><input type="number" name="premium1Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
 </tr>
@@ -465,7 +465,7 @@ table td:first-child { /* First column cells */
     <td><input type="number" name="premium2Opening" onchange="updateValues(this)"></td>
     <td><input type="number" name="premium2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
     <td><input type="number" name="premium2Calibration" onchange="updateValues(this)"></td>
-    <td><input type="number" name="premium2Liters" readonly="readonly"></td>
+    <td><input type="number" name="premium2Liters" onchange="computeDipstickFromPumpReadings()" readonly="readonly"></td>
     <td><input type="number" name="premium2Price" data-column="PumpPrice" readonly id="premium2Price" onchange="updateValues(this)"></td>
     <td><input type="number" name="premium2Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
 </tr>
@@ -474,7 +474,7 @@ table td:first-child { /* First column cells */
     <td><input type="number" name="unleaded1Opening" onchange="updateValues(this)"></td>
     <td><input type="number" name="unleaded1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
     <td><input type="number" name="unleaded1Calibration" onchange="updateValues(this)"></td>
-    <td><input type="number" name="unleaded1Liters" readonly="readonly"></td>
+    <td><input type="number" name="unleaded1Liters" onchange="computeDipstickFromPumpReadings()" readonly="readonly"></td>
     <td><input type="number" name="unleaded1Price" data-column="PumpPrice" readonly id="unleaded1Price" onchange="updateValues(this)"></td>
     <td><input type="number" name="unleaded1Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
 </tr>
@@ -483,7 +483,7 @@ table td:first-child { /* First column cells */
     <td><input type="number" name="unleaded2Opening" onchange="updateValues(this)"></td>
     <td><input type="number" name="unleaded2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
     <td><input type="number" name="unleaded2Calibration" onchange="updateValues(this)"></td>
-    <td><input type="number" name="unleaded2Liters" readonly="readonly"></td>
+    <td><input type="number" name="unleaded2Liters" onchange="computeDipstickFromPumpReadings()" readonly="readonly"></td>
     <td><input type="number" name="unleaded2Price" data-column="PumpPrice" readonly id="unleaded2Price" onchange="updateValues(this)"></td>
     <td><input type="number" name="unleaded2Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
 </tr>
@@ -492,7 +492,7 @@ table td:first-child { /* First column cells */
     <td><input type="number" name="diesel1Opening" onchange="updateValues(this)"></td>
     <td><input type="number" name="diesel1Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
     <td><input type="number" name="diesel1Calibration" onchange="updateValues(this)"></td>
-    <td><input type="number" name="diesel1Liters" readonly="readonly"></td>
+    <td><input type="number" name="diesel1Liters" onchange="computeDipstickFromPumpReadings()" readonly="readonly"></td>
     <td><input type="number" name="diesel1Price" data-column="PumpPrice" readonly id="diesel1Price" onchange="updateValues(this)"></td>
     <td><input type="number" name="diesel1Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
 </tr>
@@ -501,7 +501,7 @@ table td:first-child { /* First column cells */
     <td><input type="number" name="diesel2Opening" onchange="updateValues(this)"></td>
     <td><input type="number" name="diesel2Closing" onchange="updateValues(this); computeDipstickClosing();"></td>
     <td><input type="number" name="diesel2Calibration" onchange="updateValues(this)"></td>
-    <td><input type="number" name="diesel2Liters" readonly="readonly"></td>
+    <td><input type="number" name="diesel2Liters" onchange="computeDipstickFromPumpReadings()" readonly="readonly"></td>
     <td><input type="number" name="diesel2Price" data-column="PumpPrice" readonly id="diesel2Price" onchange="updateValues(this)"></td>
     <td><input type="number" name="diesel2Sales" onchange="updateFuelSalesTotal()" readonly="readonly"></td>
 </tr>
@@ -602,28 +602,28 @@ table td:first-child { /* First column cells */
 <table id="expensesTable" style="width: 100%;">
     <thead>
         <tr>
-            <th style="width: 70%;">Particulars</th>
-            <th style="width: 30%;">Amount</th>
+            <th style="width: 75%;">Particulars</th>
+            <th style="width: 25%;">Amount</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td><input type="text" name="expensesParticulars[]" style="width: 95%;"></td>
-            <td><input type="number" name="expensesAmount[]" style="width: 80px;" oninput="updateTotalExpenses()"></td>
+            <td><input type="number" name="expensesAmount[]" style="width: 95px; text-align:center;" oninput="updateTotalExpenses()"></td>
         </tr>
         <tr>
             <td><input type="text" name="expensesParticulars[]" style="width: 95%;"></td>
-            <td><input type="number" name="expensesAmount[]" style="width: 80px;" oninput="updateTotalExpenses()"></td>
+            <td><input type="number" name="expensesAmount[]" style="width: 95px; text-align:center;" oninput="updateTotalExpenses()"></td>
         </tr>
         <tr>
             <td><input type="text" name="expensesParticulars[]" style="width: 95%;"></td>
-            <td><input type="number" name="expensesAmount[]" style="width: 80px;" oninput="updateTotalExpenses()"></td>
+            <td><input type="number" name="expensesAmount[]" style="width: 95px; text-align:center;" oninput="updateTotalExpenses()"></td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
             <td style="text-align: right; font-weight: bold;">Total Expenses</td>
-            <td><input type="number" id="totalExpenses" readonly style="width: 80px; background-color: #e9ecef;"></td>
+            <td><input type="number" id="totalExpenses" readonly style="width: 95px; background-color: #e9ecef;"></td>
         </tr>
     </tfoot>
 </table>
@@ -949,14 +949,15 @@ function restrictFields(selector) {
 </script>
     
 <script>
-                function addExpenseRow() {
-                    var e = document.getElementById("expensesTable").getElementsByTagName("tbody")[0],
-                        t = document.createElement("tr");
-                    t.innerHTML = `
-      <td><input type="text" name="expensesParticulars[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="number" name="expensesAmount[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-    `, e.appendChild(t)
-                }
+function addExpenseRow() {
+    var e = document.getElementById("expensesTable").getElementsByTagName("tbody")[0];
+    var t = document.createElement("tr");
+    t.innerHTML = `
+        <td><input type="text" name="expensesParticulars[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
+        <td><input type="number" name="expensesAmount[]" style="width: 95px; text-align:center; padding: 5px; box-sizing: border-box;" oninput="updateTotalExpenses()"></td>
+    `;
+    e.appendChild(t);
+}
 
                 function addDiscountRow() {
                     var e = document.getElementById("discountTable").getElementsByTagName("tbody")[0],
@@ -1098,10 +1099,10 @@ function addPurchaseOrderRow() {
     }
 </script>
 <div class="section-title">Total Cash, Safe Drop, and Summary</div>
-<div class="flex-row" style="display: flex; gap: 20px;">
+<div class="flex-row" style="display: flex; gap: 10px;">
 
     <!-- Cash Breakdown Column (40%) -->
-    <div style="flex: 4; width: 40%;">
+    <div style="flex: 4;">
         <table id="cashBreakdownTable" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
     <thead>
         <tr>
@@ -1171,39 +1172,45 @@ function addPurchaseOrderRow() {
         </table>
     </div>
 
-    <!-- Safe Drop Column (30%) -->
-    <div style="flex: 2; width: 25%;">
+    <!-- Safe Drop Column (35%) -->
+    <div style="flex: 3;">
         <table id="safeDropTable" style="width: 100%; border-collapse: collapse;">
             <thead>
         <tr>
-            <th style="text-align: center; white-space: nowrap; width: 35%;">Safe Drop</th> <!-- Adjust Safe Drop column -->
-            <th style="text-align: center; white-space: nowrap; width: 65%;">Received</th> <!-- Adjust Received column -->
+            <th style="text-align: center; white-space: nowrap; width: 45%;">Safe Drop</th> <!-- Adjust Safe Drop column -->
+            <th style="text-align: center; white-space: nowrap; width: 55%;">Received</th> <!-- Adjust Received column -->
         </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>1</td>
-                    <td><input type="number" name="safeDropRow1" style="width: 75%; text-align: center;"></td>
+                    <td style="text-align: center;">1</td>
+                    <td><input type="number" name="safeDropRow1" onchange="updateSafeDropTotal()" style="width: 75%; text-align: center;"></td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td><input type="number" name="safeDropRow2" style="width: 75%; text-align: center;"></td>
+                    <td style="text-align: center;">2</td>
+                    <td><input type="number" name="safeDropRow2" onchange="updateSafeDropTotal()" style="width: 75%; text-align: center;"></td>
                 </tr>
                 <tr>
-                    <td>3</td>
-                    <td><input type="number" name="safeDropRow3" style="width: 75%; text-align: center;"></td>
+                    <td style="text-align: center;">3</td>
+                    <td><input type="number" name="safeDropRow3" onchange="updateSafeDropTotal()" style="width: 75%; text-align: center;"></td>
                 </tr>
                 <tr>
-                    <td>4</td>
-                    <td><input type="number" name="safeDropRow4" style="width: 75%; text-align: center;"></td>
+                    <td style="text-align: center;">4</td>
+                    <td><input type="number" name="safeDropRow4" onchange="updateSafeDropTotal()" style="width: 75%; text-align: center;"></td>
                 </tr>
             </tbody>
+                    <tfoot>
+            <tr>
+                <td style="text-align: right; font-weight: bold;">Total Safe Drop</td>
+                <td><input type="number" id="totalSafeDrop" readonly style="width: 75%; text-align: center; background-color: #f2f2f2;"></td>
+            </tr>
+        </tfoot>
         </table>
         <button type="button" onclick="addSafeDropRow()" style="margin-top: 10px; padding: 8px 16px; font-size: 14px;">+ Add Safe Drop</button>
     </div>
 
-    <!-- Summary Column (30%) -->
-    <div style="flex: 3.5; width: 35%;">
+    <!-- Summary Column (25%) -->
+    <div style="flex: 3;">
         <table id="summaryTable" style="width: 100%; border-collapse: collapse;">
             <thead>
         <tr>
@@ -1277,7 +1284,6 @@ function updateCashBreakdown() {
         // Update Summary
     updateSummary();
 }
-
 function addSafeDropRow() {
     const safeDropTableBody = document.getElementById("safeDropTable").getElementsByTagName("tbody")[0];
     const rowCount = safeDropTableBody.rows.length + 1; // Calculate the next row number
@@ -1285,21 +1291,24 @@ function addSafeDropRow() {
     const newRow = document.createElement("tr");
 
     newRow.innerHTML = `
-        <td>${rowCount}</td>
-        <td><input type="number" name="safeDropRow${rowCount}" style="width: 75%; padding: 5px; box-sizing: border-box;"></td>
+        <td style="text-align: center;">${rowCount}</td>
+        <td><input type="number" name="safeDropRow${rowCount}" onchange="updateSafeDropTotal()" style="width: 75%; padding: 5px; box-sizing: border-box;"></td>
     `;
 
     safeDropTableBody.appendChild(newRow);
 }
 
 function updateSafeDropTotal() {
-    const safeDropAmounts = document.querySelectorAll('input[name="safeDropAmount[]"]');
+    const safeDropAmounts = document.querySelectorAll('input[name^="safeDropRow"]');
     const total = Array.from(safeDropAmounts).reduce((sum, input) => {
         return sum + (parseFloat(input.value) || 0);
     }, 0);
 
-    document.querySelector('input[name="safeDropTotal"]').value = total.toFixed(2);
-    updateShortOver(); // Recalculate Short/Over whenever Total Cash changes
+    // Update Total Safe Drop Field
+    document.getElementById("totalSafeDrop").value = total.toFixed(2);
+
+    // Update Summary
+    updateSummary();
 }
 
 function updateShortOver() {
@@ -1363,20 +1372,34 @@ function updateValues(input) {
     row.querySelector('input[name$="Sales"]').value = totalSales.toFixed(2);
 
     // Trigger Total Fuel Sales recalculation
+    computeDipstickFromPumpReadings();
     updateFuelSalesTotal();
 }
 
 function updateFuelSalesTotal() {
-    const salesInputs = document.querySelectorAll('input[name$="Sales"]');
-    const totalSales = Array.from(salesInputs).reduce((sum, input) => {
-        const value = parseFloat(input.value) || 0;
-        return sum + value;
-    }, 0);
+    const productSalesFields = [
+        'input[name="premium1Sales"]',
+        'input[name="premium2Sales"]',
+        'input[name="unleaded1Sales"]',
+        'input[name="unleaded2Sales"]',
+        'input[name="diesel1Sales"]',
+        'input[name="diesel2Sales"]'
+    ];
 
+    let totalSales = 0;
+
+    // Iterate over each field selector
+    productSalesFields.forEach(selector => {
+        const input = document.querySelector(selector);
+        const value = parseFloat(input?.value) || 0; // Safely get the value or default to 0
+        console.log(`Selector: ${selector}, Value: ${value}`); // Debugging: Log the selector and value
+        totalSales += value;
+    });
+
+    console.log(`Total Sales Calculated: ${totalSales}`); // Debugging: Log the total sales
+
+    // Update the Total Fuel Sales field
     document.getElementById("totalFuelSales").value = totalSales.toFixed(2);
-    
-        // Update Summary
-    updateSummary();
 }
     </script>
     
@@ -1409,13 +1432,17 @@ function updateSummary() {
     const totalExpenses = parseFloat(document.getElementById("totalExpenses").value) || 0;
     const totalDiscount = parseFloat(document.getElementById("totalDiscount").value) || 0;
     const totalPO = parseFloat(document.getElementById("poTotalAmount").value) || 0;
-    const totalCash = parseFloat(document.getElementById("cashBreakdownTotal").value) || 0;
+    const cashBreakdownTotal = parseFloat(document.getElementById("cashBreakdownTotal").value) || 0;
+    const totalSafeDrop = parseFloat(document.getElementById("totalSafeDrop").value) || 0;
 
     // Update Summary Section fields
     document.getElementById("summaryFuelSales").value = totalFuelSales.toFixed(2);
     document.getElementById("summaryExpenses").value = totalExpenses.toFixed(2);
     document.getElementById("summaryDiscount").value = totalDiscount.toFixed(2);
     document.getElementById("summaryPO").value = totalPO.toFixed(2);
+
+    // Compute Total Cash as cashBreakdownTotal + totalSafeDrop
+    const totalCash = cashBreakdownTotal + totalSafeDrop;
     document.getElementById("summaryCash").value = totalCash.toFixed(2);
 
     // Recalculate Short (-) or Over (+)
@@ -1480,19 +1507,19 @@ function updateTotalExpenses() {
     // Update Summary
     updateSummary();
 }
-
+//
         // Function to add a new expense row dynamically
-        function addExpenseRow() {
-            const expensesTable = document.getElementById("expensesTable").getElementsByTagName("tbody")[0];
-            const newRow = document.createElement("tr");
-
-            newRow.innerHTML = `
-                <td><input type="text" name="expensesParticulars[]"></td>
-                <td><input type="number" name="expensesAmount[]" oninput="updateTotalExpenses()"></td>
-            `;
-
-            expensesTable.appendChild(newRow);
-        }
+//        function addExpenseRow() {
+//            const expensesTable = document.getElementById("expensesTable").getElementsByTagName("tbody")[0];
+ //           const newRow = document.createElement("tr");
+//
+//            newRow.innerHTML = `
+ //               <td><input type="text" name="expensesParticulars[]"></td>
+//                <td><input type="number" name="expensesAmount[]" oninput="updateTotalExpenses()"></td>
+//            `;
+//
+ //           expensesTable.appendChild(newRow);
+ //       }
     </script>
 </div>
     <script>
