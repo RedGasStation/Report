@@ -694,6 +694,8 @@ function addDiscountRow() {
     if (currentUserRole === "user") {
         restrictFields('input[data-column="DiscountPerLiter"]');
     }
+    discountTableBody.appendChild(newRow);
+    addDynamicRestrictions();
 }
 
 </script>           
@@ -932,20 +934,6 @@ function restrictFields(selector) {
         }
     });
 
-    // Ensure dynamic restrictions are applied
-    function addDiscountRow() {
-        const discountTableBody = document.getElementById("discountTable").getElementsByTagName("tbody")[0];
-        const newRow = document.createElement("tr");
-        newRow.innerHTML = `
-            <td><input type="text" name="discountClientName[]"></td>
-            <td><input type="text" name="discountProduct[]"></td>
-            <td><input type="number" name="discountLiters[]"></td>
-            <td><input type="number" name="discountPerLiter[]" readonly data-column="DiscountPerLiter"></td>
-            <td><input type="number" name="discountTotal[]" readonly></td>
-        `;
-        discountTableBody.appendChild(newRow);
-        addDynamicRestrictions();
-    }
 </script>
     
 <script>
@@ -958,18 +946,6 @@ function addExpenseRow() {
     `;
     e.appendChild(t);
 }
-
-                function addDiscountRow() {
-                    var e = document.getElementById("discountTable").getElementsByTagName("tbody")[0],
-                        t = document.createElement("tr");
-                    t.innerHTML = `
-      <td><input type="text" name="discountClientName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="text" name="discountProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-      <td><input type="number" name="discountLiters[]" style="width: 90%; padding: 5px; box-sizing: border-box;" onchange="updateTotalDiscount(this)"></td>
-      <td><input type="number" name="discountPerLiter[]" style="width: 90%; padding: 5px; box-sizing: border-box;" onchange="updateTotalDiscount(this)"></td>
-      <td><input type="number" name="discountTotal[]" readonly style="width: 90%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
-    `, e.appendChild(t)
-                }
 
                 function updateTotalDiscount(e) {
                     var e = e.closest("tr"),
