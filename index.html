@@ -422,6 +422,7 @@ table td:first-child { /* First column cells */
                 <div style="flex:1">
                     <p style="margin:0;font-size:16px;font-weight:700;color:red">RED STAR GAS STATION</p>
                     <p style="margin:0;font-size:14px;color:#34495e">BRGY PEMIENTA UMINGAN PANGASINAN<br>CFI NO 0922875-1312</p>
+                    <p id="reportNumber" style="margin: 0; font-size: 14px; font-weight: bold; color: #34495e;">REPORT NUMBER: Loading...</p>
                 </div>
                 <div style="flex:1">
                     <div style="display:flex;flex-direction:column;gap:10px">
@@ -1304,6 +1305,84 @@ function updateShortOver() {
 }
 </script>
 
+<!-- Add report number -->
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        console.log("DOM fully loaded and parsed.");
+
+        // Initialize Firebase
+        firebase.initializeApp({
+            apiKey: "AIzaSyDs0nHtHiQOANohq2TBm_xXUJ8qRtRQQhs",
+            authDomain: "redstar-27bfa.firebaseapp.com",
+            projectId: "redstar-27bfa",
+            storageBucket: "redstar-27bfa.firebaseapp.com",
+            messagingSenderId: "863347286957",
+            appId: "1:863347286957:web:3e27391d7c0667174ef724",
+            measurementId: "G-WBM4JBV99F"
+        });
+
+        const firestore = firebase.firestore();
+
+        // Default report number
+        let nextReportNumber = 1;
+
+        // Fetch the last report number
+        async function fetchLastReportNumber() {
+            try {
+                const querySnapshot = await firestore
+                    .collection("gasStationReports")
+                    .orderBy("reportNumber", "desc")
+                    .limit(1)
+                    .get();
+
+                if (!querySnapshot.empty) {
+                    const lastReport = querySnapshot.docs[0].data();
+                    nextReportNumber = (lastReport.reportNumber || 0) + 1;
+                }
+
+                // Update the report number in the UI
+                document.getElementById("reportNumber").innerText = `REPORT NUMBER: ${nextReportNumber}`;
+            } catch (error) {
+                console.error("Error fetching last report number:", error);
+                document.getElementById("reportNumber").innerText = "REPORT NUMBER: Error";
+            }
+        }
+
+        // Call this function on page load to fetch the last report number
+        await fetchLastReportNumber();
+
+        // Form submission
+        const gasStationForm = document.getElementById("gasStationForm");
+
+        if (gasStationForm) {
+            console.log("Form element found.");
+            gasStationForm.addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(e.target);
+                const reportData = Object.fromEntries(formData.entries());
+
+                // Add the report number to the report data
+                reportData.reportNumber = nextReportNumber;
+
+                try {
+                    const docRef = await firestore.collection("gasStationReports").add(reportData);
+                    console.log(`Document written with ID: ${docRef.id}`);
+                    alert(`Report submitted successfully! Report Number: ${nextReportNumber}`);
+                    e.target.reset(); // Clear the form
+                    location.reload(); // Reload to fetch the next report number
+                } catch (error) {
+                    console.error("Error submitting report:", error);
+                    alert("Failed to submit the report. Please try again.");
+                }
+            });
+        } else {
+            console.error("Form element not found.");
+        }
+    });
+</script>
+
+<!-- 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             console.log("DOM fully loaded and parsed.");
@@ -1332,6 +1411,7 @@ function updateShortOver() {
             })) : console.error("Form element not found.")
         })
     </script>
+ -->
     <script>
 function updateValues(input) {
     const row = input.closest("tr");
@@ -1550,6 +1630,33 @@ function updateTotalExpenses() {
         console.log(`Updated ${numberInputs.length} number input fields to accept decimals.`);
     });
 </script>
+<!-- Add Report Number -->
+<script>
+    let nextReportNumber = 1; // Default report number if no previous report exists
 
+    async function fetchLastReportNumber() {
+        try {
+            const querySnapshot = await firebase.firestore()
+                .collection("gasStationReports")
+                .orderBy("reportNumber", "desc")
+                .limit(1)
+                .get();
+
+            if (!querySnapshot.empty) {
+                const lastReport = querySnapshot.docs[0].data();
+                nextReportNumber = (lastReport.reportNumber || 0) + 1; // Increment the last report number
+            }
+
+            // Update the UI
+            document.getElementById("reportNumber").innerText = `REPORT NUMBER: ${nextReportNumber}`;
+        } catch (error) {
+            console.error("Error fetching last report number:", error);
+            document.getElementById("reportNumber").innerText = "REPORT NUMBER: Error";
+        }
+    }
+
+    // Call this function on page load to fetch and display the report number
+    document.addEventListener("DOMContentLoaded", fetchLastReportNumber);
+</script>
 </body>
 </html>
