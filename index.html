@@ -672,7 +672,7 @@ table td:first-child { /* First column cells */
             </table><button type="button" onclick="addDiscountRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Discount</button>
            
            <script>
-           let discountRowCounter = 1; // Counter to track the number of rows
+           let discountRowCounter = 0; // Counter to track the number of rows
 
 function addDiscountRow() {
     const discountTableBody = document.getElementById("discountTable").getElementsByTagName("tbody")[0];
@@ -683,7 +683,7 @@ function addDiscountRow() {
         <td><input type="text" name="discountProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
         <td><input type="number" name="discountLiters[]" style="width: 90%; padding: 5px; box-sizing: border-box;"></td>
         <td>
-            <input type="number" name="discountPerLiter[]" data-column="DiscountPerLiter" style="width: 90%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;" readonly>
+            <input type="number" name="discountPerLiter[]" data-column="DiscountPerLiter" style="width: 90%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;" readonly onchange="updateTotalDiscount(this)">
         </td>
         <td><input type="number" name="discountTotal[]" readonly style="width: 90%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
     `;
@@ -695,7 +695,7 @@ function addDiscountRow() {
         restrictFields('input[data-column="DiscountPerLiter"]');
     }
     discountTableBody.appendChild(newRow);
-    addDynamicRestrictions();
+ 
 }
 
 </script>           
@@ -947,12 +947,13 @@ function addExpenseRow() {
     e.appendChild(t);
 }
 
-                function updateTotalDiscount(e) {
+function updateTotalDiscount(e) {
                     var e = e.closest("tr"),
                         t = parseFloat(e.querySelector('input[name="discountLiters[]"]').value) || 0,
                         n = parseFloat(e.querySelector('input[name="discountPerLiter[]"]').value) || 0;
                     e.querySelector('input[name="discountTotal[]"]').value = (t * n).toFixed(2), updateDiscountSummary()
-                }
+                    
+}
 
  function updateDiscountSummary() {
     const totalDiscount = Array.from(document.querySelectorAll('input[name="discountTotal[]"]')).reduce((sum, input) => {
