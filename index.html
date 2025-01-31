@@ -967,67 +967,150 @@ function updateTotalDiscount(e) {
     updateSummary();
 }
 
-            </script>
+</script>
             
-            <div class="section-title">Purchase Order</div>
-            <table id="purchaseOrderTable" style="width:100%;border-collapse:collapse">
-                <thead>
-                    <tr>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Customer's Name</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Vehicle No.</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">PO #</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Product</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Liters</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Discount</th>
-                        <th style="text-align:left;padding:10px;background-color:#f2f2f2">Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" Onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="text" name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
-                        <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" onchange="updatePurchaseOrderTotal(this)"></td>
-                        <td><input type="number" name="poAmount[]" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6" style="text-align:right;font-weight:700;padding:10px">Total</td>
-                        <td><input type="number" id="poTotalAmount" readonly="readonly" style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef"></td>
-                    </tr>
-                </tfoot>
-            </table><button type="button" onclick="addPurchaseOrderRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Purchase Order</button>
+<div class="section-title">Purchase Order</div>
+<table id="purchaseOrderTable" style="width:100%;border-collapse:collapse">
+    <thead>
+        <tr>
+            <th style="text-align:left;padding:10px;background-color:#f2f2f2">Customer's Name</th>
+            <th style="text-align:left;padding:10px;background-color:#f2f2f2">Vehicle No.</th>
+            <th style="text-align:left;padding:10px;background-color:#f2f2f2">PO #</th>
+            <th style="text-align:left;padding:10px;background-color:#f2f2f2">Product</th>
+            <th style="text-align:left;padding:10px;background-color:#f2f2f2">Liters</th>
+            <th style="text-align:left;padding:10px;background-color:#f2f2f2">Price</th>
+            <th style="text-align:left;padding:10px;background-color:#f2f2f2">Discount</th>
+            <th style="text-align:left;padding:10px;background-color:#f2f2f2">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td>
+                <select name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePOPrice(this)">
+                    <option value="" disabled selected>Select Product</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Unleaded">Unleaded</option>
+                    <option value="Diesel">Diesel</option>
+                </select>
+            </td>
+            <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" oninput="updatePurchaseOrderTotal(this)"></td>
+            <td><input type="number" name="poPrice[]" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+            <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" oninput="updatePurchaseOrderTotal(this)"></td>
+            <td><input type="number" name="poAmount[]" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+        </tr>
+          <tr>
+            <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td>
+                <select name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePOPrice(this)">
+                    <option value="" disabled selected>Select Product</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Unleaded">Unleaded</option>
+                    <option value="Diesel">Diesel</option>
+                </select>
+            </td>
+            <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" oninput="updatePurchaseOrderTotal(this)"></td>
+            <td><input type="number" name="poPrice[]" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+            <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" oninput="updatePurchaseOrderTotal(this)"></td>
+            <td><input type="number" name="poAmount[]" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+        </tr>
+          <tr>
+            <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td>
+                <select name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePOPrice(this)">
+                    <option value="" disabled selected>Select Product</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Unleaded">Unleaded</option>
+                    <option value="Diesel">Diesel</option>
+                </select>
+            </td>
+            <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" oninput="updatePurchaseOrderTotal(this)"></td>
+            <td><input type="number" name="poPrice[]" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+            <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" oninput="updatePurchaseOrderTotal(this)"></td>
+            <td><input type="number" name="poAmount[]" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+        </tr>
+          <tr>
+            <td><input type="text" name="poCustomerName[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td><input type="text" name="poVehicleNo[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td><input type="text" name="poNumber[]" style="width:95%;padding:5px;box-sizing:border-box"></td>
+            <td>
+                <select name="poProduct[]" style="width:95%;padding:5px;box-sizing:border-box" onchange="updatePOPrice(this)">
+                    <option value="" disabled selected>Select Product</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Unleaded">Unleaded</option>
+                    <option value="Diesel">Diesel</option>
+                </select>
+            </td>
+            <td><input type="number" name="poLiters[]" style="width:95%;padding:5px;box-sizing:border-box" oninput="updatePurchaseOrderTotal(this)"></td>
+            <td><input type="number" name="poPrice[]" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+            <td><input type="number" name="poDiscount[]" style="width:95%;padding:5px;box-sizing:border-box" data-column="PODiscount" oninput="updatePurchaseOrderTotal(this)"></td>
+            <td><input type="number" name="poAmount[]" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+        </tr>
+        </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="7" style="text-align:right;font-weight:700;padding:10px">Total</td>
+            <td><input type="number" id="poTotalAmount" readonly style="width:95%;padding:5px;box-sizing:border-box;background-color:#e9ecef;"></td>
+        </tr>
+    </tfoot>
+</table>
+<button type="button" onclick="addPurchaseOrderRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Purchase Order</button>
+
 <script>
+// // Store latest prices in a global variable
+// let previousPrices = { premium: 0, unleaded: 0, diesel: 0 };
+// 
+// // Fetch latest pump prices from Firebase
+// async function fetchPreviousPrices() {
+//     try {
+//         const querySnapshot = await firebase.firestore()
+//             .collection("gasStationReports")
+//             .orderBy("reportNumber", "desc")
+//             .limit(1)
+//             .get();
+// 
+//         if (!querySnapshot.empty) {
+//             const lastReport = querySnapshot.docs[0].data();
+//             previousPrices.premium = parseFloat(lastReport.premium1Price) || 0;
+//             previousPrices.unleaded = parseFloat(lastReport.unleaded1Price) || 0;
+//             previousPrices.diesel = parseFloat(lastReport.diesel1Price) || 0;
+//         }
+// 
+//         console.log("Previous Prices Loaded:", previousPrices);
+//     } catch (error) {
+//         console.error("Error fetching previous prices:", error);
+//     }
+// }
+
+// Update price when product is selected
+function updatePOPrice(selectElement) {
+    const row = selectElement.closest("tr");
+    let priceField = row.querySelector('input[name="poPrice[]"]');
+
+    switch (selectElement.value) {
+        case "Premium":
+            priceField.value = previousPrices.premium;
+            break;
+        case "Unleaded":
+            priceField.value = previousPrices.unleaded;
+            break;
+        case "Diesel":
+            priceField.value = previousPrices.diesel;
+            break;
+        default:
+            priceField.value = "";
+    }
+
+    updatePurchaseOrderTotal(row.querySelector('input[name="poLiters[]"]'));
+}
+
+// Add new purchase order row dynamically
 function addPurchaseOrderRow() {
     const purchaseOrderTableBody = document.getElementById("purchaseOrderTable").getElementsByTagName("tbody")[0];
     const newRow = document.createElement("tr");
@@ -1036,11 +1119,17 @@ function addPurchaseOrderRow() {
         <td><input type="text" name="poCustomerName[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
         <td><input type="text" name="poVehicleNo[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
         <td><input type="text" name="poNumber[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-        <td><input type="text" name="poProduct[]" style="width: 95%; padding: 5px; box-sizing: border-box;"></td>
-        <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)"></td>
         <td>
-            <input type="number" name="poDiscount[]" data-column="PODiscount" style="width: 95%; padding: 5px; box-sizing: border-box;" onchange="updatePurchaseOrderTotal(this)">
+            <select name="poProduct[]" style="width:95%; padding:5px; box-sizing:border-box" onchange="updatePOPrice(this)">
+                <option value="" disabled selected>Select Product</option>
+                <option value="Premium">Premium</option>
+                <option value="Unleaded">Unleaded</option>
+                <option value="Diesel">Diesel</option>
+            </select>
         </td>
+        <td><input type="number" name="poLiters[]" style="width: 95%; padding: 5px; box-sizing: border-box;" oninput="updatePurchaseOrderTotal(this)"></td>
+        <td><input type="number" name="poPrice[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
+        <td><input type="number" name="poDiscount[]" data-column="PODiscount" style="width: 95%; padding: 5px; box-sizing: border-box;" oninput="updatePurchaseOrderTotal(this)"></td>
         <td><input type="number" name="poAmount[]" readonly style="width: 95%; padding: 5px; box-sizing: border-box; background-color: #e9ecef;"></td>
     `;
 
@@ -1051,27 +1140,46 @@ function addPurchaseOrderRow() {
         restrictFields('input[data-column="PODiscount"]');
     }
 }
-    function updatePurchaseOrderTotal(inputElement) {
-        // Get the row containing the changed input
-        var row = inputElement.closest("tr");
+    
 
-        // Get the values of liters and discount
-        var liters = parseFloat(row.querySelector('input[name="poLiters[]"]').value) || 0;
-        var discount = parseFloat(row.querySelector('input[name="poDiscount[]"]').value) || 0;
+// function updatePurchaseOrderTotal(inputElement) {
+//         // Get the row containing the changed input
+//         var row = inputElement.closest("tr");
+// 
+//         // Get the values of liters and discount
+//         var liters = parseFloat(row.querySelector('input[name="poLiters[]"]').value) || 0;
+//         var discount = parseFloat(row.querySelector('input[name="poDiscount[]"]').value) || 0;
+// 
+//         // Calculate the amount
+//         var amount = liters * discount;
+// 
+//         // Update the amount field in the current row
+//         var amountField = row.querySelector('input[name="poAmount[]"]');
+//         amountField.value = amount.toFixed(2);
+// 
+//         // Update the total amount at the bottom of the table
+//         var totalAmountField = document.getElementById("poTotalAmount");
+//         var totalAmount = Array.from(document.querySelectorAll('input[name="poAmount[]"]'))
+//             .reduce((sum, amountInput) => sum + (parseFloat(amountInput.value) || 0), 0);
+//         totalAmountField.value = totalAmount.toFixed(2);
+//         
+function updatePurchaseOrderTotal(inputElement) {
+    const row = inputElement.closest("tr");
 
-        // Calculate the amount
-        var amount = liters * discount;
+    const liters = parseFloat(row.querySelector('input[name="poLiters[]"]').value) || 0;
+    const price = parseFloat(row.querySelector('input[name="poPrice[]"]').value) || 0;
+    const discount = parseFloat(row.querySelector('input[name="poDiscount[]"]').value) || 0;
 
-        // Update the amount field in the current row
-        var amountField = row.querySelector('input[name="poAmount[]"]');
-        amountField.value = amount.toFixed(2);
+    const amount = (liters * price) - discount;
+    row.querySelector('input[name="poAmount[]"]').value = amount.toFixed(2);
 
-        // Update the total amount at the bottom of the table
-        var totalAmountField = document.getElementById("poTotalAmount");
-        var totalAmount = Array.from(document.querySelectorAll('input[name="poAmount[]"]'))
-            .reduce((sum, amountInput) => sum + (parseFloat(amountInput.value) || 0), 0);
-        totalAmountField.value = totalAmount.toFixed(2);
-        
+    let totalAmount = Array.from(document.querySelectorAll('input[name="poAmount[]"]'))
+        .reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
+    document.getElementById("poTotalAmount").value = totalAmount.toFixed(2);
+
+// Fetch previous prices on page load
+document.addEventListener("DOMContentLoaded", fetchPreviousPrices);
+
             // Update Summary
     updateSummary();
     }
@@ -1227,12 +1335,25 @@ function addPurchaseOrderRow() {
 </div>
 
 <!-- Submit Button -->
+<!-- 
 <div style="text-align: center; margin-top: 20px;">
     <button type="submit" style="padding: 10px 20px; font-size: 16px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">Submit Report</button>
 </div>      
+ -->
+
+
+<!-- Submit and Logout Buttons -->
+<div style="text-align: center; margin-top: 20px;">
+    <button type="submit" style="padding: 10px 20px; font-size: 16px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Submit Report
+    </button>
+    <button type="button" onclick="logoutUser()" style="padding: 10px 20px; font-size: 16px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+        Logout
+    </button>
+</div>
+
 
 <script>
-
 function updateCashBreakdown() {
     const denominations = [
         { value: 1000, piecesField: 'denomination1000Pieces', amountField: 'denomination1000Amount' },
@@ -1657,6 +1778,101 @@ function updateTotalExpenses() {
 
     // Call this function on page load to fetch and display the report number
     document.addEventListener("DOMContentLoaded", fetchLastReportNumber);
+</script>
+<script>
+let previousPrices = {
+    premium: 0,
+    unleaded: 0,
+    diesel: 0
+};
+
+// 🔹 Fetch latest pump prices from Firebase on page load
+async function preFillPumpPrices() {
+    const firestore = firebase.firestore();
+
+    try {
+        const querySnapshot = await firestore
+            .collection("gasStationReports")
+            .orderBy("reportNumber", "desc")
+            .limit(1)
+            .get();
+
+        if (!querySnapshot.empty) {
+            const lastReport = querySnapshot.docs[0].data();
+            
+            // Store prices in global variable
+            previousPrices.premium = parseFloat(lastReport.premium1Price) || 0;
+            previousPrices.unleaded = parseFloat(lastReport.unleaded1Price) || 0;
+            previousPrices.diesel = parseFloat(lastReport.diesel1Price) || 0;
+
+            // Prefill the Electronic Reading section
+            document.getElementById("premium1Price").value = previousPrices.premium;
+            document.getElementById("unleaded1Price").value = previousPrices.unleaded;
+            document.getElementById("diesel1Price").value = previousPrices.diesel;
+        }
+    } catch (error) {
+        console.error("Error fetching previous report:", error);
+    }
+}
+// async function preFillPumpPrices() {
+//     const firestore = firebase.firestore();
+//     
+//     try {
+//         // Fetch the latest report
+//         const querySnapshot = await firestore
+//             .collection("gasStationReports")
+//             .orderBy("reportNumber", "desc")
+//             .limit(1)
+//             .get();
+// 
+//         if (!querySnapshot.empty) {
+//             const lastReport = querySnapshot.docs[0].data();
+//             
+//             // Mapping fields from last report to corresponding inputs
+//             const priceFields = {
+//                 "premium1Price": "premium1Price",
+//                 "premium2Price": "premium2Price",
+//                 "unleaded1Price": "unleaded1Price",
+//                 "unleaded2Price": "unleaded2Price",
+//                 "diesel1Price": "diesel1Price",
+//                 "diesel2Price": "diesel2Price"
+//             };
+// 
+//             // Iterate through the price fields and pre-fill them
+//             Object.keys(priceFields).forEach(key => {
+//                 if (lastReport[key] !== undefined) {
+//                     document.querySelector(`input[name="${priceFields[key]}"]`).value = lastReport[key];
+//                 }
+//             });
+// 
+//             console.log("Pump prices pre-filled successfully from previous report.");
+//         } else {
+//             console.log("No previous report found.");
+//         }
+//     } catch (error) {
+//         console.error("Error fetching previous report:", error);
+//     }
+// }
+
+// Execute the function after Firebase is initialized
+document.addEventListener("DOMContentLoaded", () => {
+    preFillPumpPrices();
+});
+
+function logoutUser() {
+    // Clear current user session
+    currentUserRole = null;
+
+    // Hide the main content and show the login screen
+    document.getElementById("mainContent").style.display = "none";
+    document.getElementById("loginScreen").style.display = "flex";
+
+    // Reset the login form fields
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+
+    console.log("User logged out successfully.");
+}
 </script>
 </body>
 </html>
