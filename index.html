@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -419,24 +422,64 @@ table td:first-child { /* First column cells */
     <div class="form-container">
         <form id="gasStationForm">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:15px">
-                <div style="flex:1">
-                    <p style="margin:0;font-size:16px;font-weight:700;color:red">RED STAR GAS STATION</p>
-                    <p style="margin:0;font-size:14px;color:#34495e">BRGY PEMIENTA UMINGAN PANGASINAN<br>CFI NO 0922875-1312</p>
-                    <p id="reportNumber" style="margin: 0; font-size: 14px; font-weight: bold; color: #34495e;">REPORT NUMBER: Loading...</p>
+                
+                <!-- Left Section: Station Name & Branch Selection -->
+                <div style="flex:1;">
+<!--                     <p style="margin:0;font-size:16px;font-weight:700;color:red">RED STAR GAS STATION</p> -->
+                    
+                    <!-- Navigation Bar for DAILY | WEEKLY -->
+<div id="navTabs" style="text-align: center; margin-bottom: 20px;">
+    <a href="https://redstargas-ec7ed.web.app/" style="padding: 10px 20px; text-decoration: none; font-weight: bold; 
+        border-bottom: 3px solid #e74c3c; color: white; background: #e74c3c;">DAILY</a>
+    
+    <a href="https://redstar-27bfa.web.app/" style="padding: 10px 20px; text-decoration: none; font-weight: bold; 
+        border-bottom: 3px solid #bdc3c7; color: #2c3e50; background: #bdc3c7;">WEEKLY</a>
+</div>
+
+                    <!-- Branch Selection: Now aligned properly -->
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                        <label for="branchSelection" style="font-weight: bold; white-space: nowrap;">Branch:</label>
+<select id="branchSelection" name="branchSelection" onchange="handleBranchChange()" style="padding:5px; width: 250px; border: 1px solid #ddd; border-radius: 5px;">
+    <option value="" disabled selected>Select Branch</option>
+    <option value="branch1">1 - Red Star Gas Station</option>
+    <option value="branch2">2 - MVS Gas Station</option>
+    <option value="branch3">3 - Star 888 Gas Station</option>
+</select>
+                    </div>
+
+                    <!-- Dynamic Address Display -->
+                    <p id="branchAddress" style="margin-top: 5px;font-size:14px;color:#34495e;font-weight:600;"></p>
+
+                    <p id="reportNumber" style="margin-top:5px; font-size:14px; font-weight:bold; color:#34495e;">REPORT NUMBER: Loading...</p>
                 </div>
-                <div style="flex:1">
+
+                <!-- Right Section: Crew, Cashier, Shift, Date -->
+                <div style="flex:1;">
                     <div style="display:flex;flex-direction:column;gap:10px">
-                        <div style="display:flex;gap:10px"><label for="crewName" style="flex:0 0 120px;font-weight:700">Crew Name:</label> <input type="text" id="crewName" name="crewName" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
-                        <div style="display:flex;gap:10px"><label for="cashierName" style="flex:0 0 120px;font-weight:700">Cashier:</label> <input type="text" id="cashierName" name="cashierName" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
-                        <div style="display:flex;gap:10px"><label for="shiftTime" style="flex:0 0 120px;font-weight:700">Shift (Time):</label> <select id="shiftTime" name="shiftTime" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px">
-                                <option value="" disabled="disabled" selected="selected">Select Shift</option>
+                        <div style="display:flex;gap:10px">
+                            <label for="crewName" style="flex:0 0 120px;font-weight:700">Crew Name:</label> 
+                            <input type="text" id="crewName" name="crewName" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px">
+                        </div>
+                        <div style="display:flex;gap:10px">
+                            <label for="cashierName" style="flex:0 0 120px;font-weight:700">Cashier:</label> 
+                            <input type="text" id="cashierName" name="cashierName" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px">
+                        </div>
+                        <div style="display:flex;gap:10px">
+                            <label for="shiftTime" style="flex:0 0 120px;font-weight:700">Shift (Time):</label> 
+                            <select id="shiftTime" name="shiftTime" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px">
+                                <option value="" disabled selected>Select Shift</option>
                                 <option value="06:00am to 15:00pm">06:00am to 15:00pm</option>
                                 <option value="14:00pm to 22:00pm">14:00pm to 22:00pm</option>
                                 <option value="21:00pm to 06:00am">21:00pm to 06:00am</option>
-                            </select></div>
-                        <div style="display:flex;gap:10px"><label for="reportDate" style="flex:0 0 120px;font-weight:700">Date:</label> <input type="date" id="reportDate" name="reportDate" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px"></div>
+                            </select>
+                        </div>
+                        <div style="display:flex;gap:10px">
+                            <label for="reportDate" style="flex:0 0 120px;font-weight:700">Date:</label> 
+                            <input type="date" id="reportDate" name="reportDate" required style="flex:1;padding:8px;border:1px solid #ddd;border-radius:5px">
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div class="section-title">Electronic Reading</div>
             <table>
@@ -1170,19 +1213,24 @@ function updatePurchaseOrderTotal(inputElement) {
     const price = parseFloat(row.querySelector('input[name="poPrice[]"]').value) || 0;
     const discount = parseFloat(row.querySelector('input[name="poDiscount[]"]').value) || 0;
 
+    // Calculate Amount
     const amount = (liters * price) - discount;
     row.querySelector('input[name="poAmount[]"]').value = amount.toFixed(2);
 
+    // Calculate Total Purchase Order Amount
     let totalAmount = Array.from(document.querySelectorAll('input[name="poAmount[]"]'))
         .reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
     document.getElementById("poTotalAmount").value = totalAmount.toFixed(2);
 
-// Fetch previous prices on page load
-document.addEventListener("DOMContentLoaded", fetchPreviousPrices);
+    console.log(`Updated PO Amount: ${amount}, Total PO: ${totalAmount}`);
 
-            // Update Summary
-    updateSummary();
+    // ✅ Call updateSummary() properly
+    if (typeof updateSummary === "function") {
+        updateSummary();
+    } else {
+        console.error("❌ updateSummary() is not defined.");
     }
+}
 </script>
 <div class="section-title">Total Cash, Safe Drop, and Summary</div>
 <div class="flex-row" style="display: flex; gap: 10px;">
@@ -1485,6 +1533,9 @@ function updateShortOver() {
 
                 // Add the report number to the report data
                 reportData.reportNumber = nextReportNumber;
+                
+                // ✅ FIX: Add branch selection before submitting to Firestore
+reportData.branch = document.getElementById("branchSelection").value;
 
                 try {
                     const docRef = await firestore.collection("gasStationReports").add(reportData);
@@ -1552,6 +1603,8 @@ function updateValues(input) {
     // Trigger Total Fuel Sales recalculation
     computeDipstickFromPumpReadings();
     updateFuelSalesTotal();
+        // Update Summary
+    updateSummary();
 }
 
 function updateFuelSalesTotal() {
@@ -1578,11 +1631,12 @@ function updateFuelSalesTotal() {
 
     // Update the Total Fuel Sales field
     document.getElementById("totalFuelSales").value = totalSales.toFixed(2);
-}
-    </script>
     
+}
  
-    <script>
+</script>
+    
+<script>
     
 function computeDipstickFromPumpReadings() {
     // Premium Total Liters Sold
@@ -1751,6 +1805,8 @@ function updateTotalExpenses() {
         console.log(`Updated ${numberInputs.length} number input fields to accept decimals.`);
     });
 </script>
+
+
 <!-- Add Report Number -->
 <script>
     let nextReportNumber = 1; // Default report number if no previous report exists
@@ -1779,41 +1835,82 @@ function updateTotalExpenses() {
     // Call this function on page load to fetch and display the report number
     document.addEventListener("DOMContentLoaded", fetchLastReportNumber);
 </script>
-<script>
-let previousPrices = {
-    premium: 0,
-    unleaded: 0,
-    diesel: 0
-};
 
-// 🔹 Fetch latest pump prices from Firebase on page load
-async function preFillPumpPrices() {
+<script>
+async function fetchPreviousPumpPrices() {
+    console.log("🔥 Fetching previous pump prices...");
+
     const firestore = firebase.firestore();
+    const branchSelection = document.getElementById("branchSelection").value;
+
+    if (!branchSelection) {
+        console.log("🚨 No branch selected. Skipping fetch.");
+        return;
+    }
+
+    console.log(`🔍 Searching for pump prices for branch: ${branchSelection}`);
 
     try {
         const querySnapshot = await firestore
             .collection("gasStationReports")
-            .orderBy("reportNumber", "desc")
+            .where("branchSelection", "==", branchSelection)  // ✅ Fetch only for selected branch
+            .orderBy("reportNumber", "desc")  // ✅ Get latest report for that branch
             .limit(1)
             .get();
 
-        if (!querySnapshot.empty) {
-            const lastReport = querySnapshot.docs[0].data();
-            
-            // Store prices in global variable
-            previousPrices.premium = parseFloat(lastReport.premium1Price) || 0;
-            previousPrices.unleaded = parseFloat(lastReport.unleaded1Price) || 0;
-            previousPrices.diesel = parseFloat(lastReport.diesel1Price) || 0;
-
-            // Prefill the Electronic Reading section
-            document.getElementById("premium1Price").value = previousPrices.premium;
-            document.getElementById("unleaded1Price").value = previousPrices.unleaded;
-            document.getElementById("diesel1Price").value = previousPrices.diesel;
+        if (querySnapshot.empty) {
+            console.warn("❌ No previous pump prices found for this branch.");
+            return;
         }
+
+        const lastReport = querySnapshot.docs[0].data();
+        console.log("📄 Last report fetched:", lastReport);
+
+        // ✅ Update Pump Prices
+        document.getElementById("premium1Price").value = lastReport.premium1Price || 0;
+        document.getElementById("unleaded1Price").value = lastReport.unleaded1Price || 0;
+        document.getElementById("diesel1Price").value = lastReport.diesel1Price || 0;
+
+        console.log("🎯 Pump prices updated successfully!");
     } catch (error) {
-        console.error("Error fetching previous report:", error);
+        console.error("❌ Error fetching previous pump prices:", error);
     }
 }
+// let previousPrices = {
+//     premium: 0,
+//     unleaded: 0,
+//     diesel: 0
+// };
+// 
+// // 🔹 Fetch latest pump prices from Firebase on page load
+// async function preFillPumpPrices() {
+//     const firestore = firebase.firestore();
+// 
+//     try {
+//         const querySnapshot = await firestore
+//             .collection("gasStationReports")
+//             .orderBy("reportNumber", "desc")
+//             .limit(1)
+//             .get();
+// 
+//         if (!querySnapshot.empty) {
+//             const lastReport = querySnapshot.docs[0].data();
+//             
+//             // Store prices in global variable
+//             previousPrices.premium = parseFloat(lastReport.premium1Price) || 0;
+//             previousPrices.unleaded = parseFloat(lastReport.unleaded1Price) || 0;
+//             previousPrices.diesel = parseFloat(lastReport.diesel1Price) || 0;
+// 
+//             // Prefill the Electronic Reading section
+//             document.getElementById("premium1Price").value = previousPrices.premium;
+//             document.getElementById("unleaded1Price").value = previousPrices.unleaded;
+//             document.getElementById("diesel1Price").value = previousPrices.diesel;
+//         }
+//     } catch (error) {
+//         console.error("Error fetching previous report:", error);
+//     }
+// }
+// ---------------------------------------------------
 // async function preFillPumpPrices() {
 //     const firestore = firebase.firestore();
 //     
@@ -1872,6 +1969,254 @@ function logoutUser() {
     document.getElementById("password").value = "";
 
     console.log("User logged out successfully.");
+}
+// 
+// function updatePumpReadingsFromReport(lastReport) {
+//     const pumpMappings = {
+//         "premium1Closing": "premium1Opening",
+//         "premium2Closing": "premium2Opening",
+//         "unleaded1Closing": "unleaded1Opening",
+//         "unleaded2Closing": "unleaded2Opening",
+//         "diesel1Closing": "diesel1Opening",
+//         "diesel2Closing": "diesel2Opening"
+//     };
+// 
+//     Object.keys(pumpMappings).forEach(closingKey => {
+//         const openingKey = pumpMappings[closingKey];
+// 
+//         if (lastReport.hasOwnProperty(closingKey)) {
+//             const interval = setInterval(() => {
+//                 const inputField = document.querySelector(`input[name="${openingKey}"]`);
+//                 
+//                 if (inputField) {
+//                     inputField.value = lastReport[closingKey];
+//                     console.log(`✅ Updated ${openingKey} to ${lastReport[closingKey]}`);
+//                     clearInterval(interval); // Stop checking
+//                 } else {
+//                     console.warn(`⏳ Waiting for input field to load: ${openingKey}`);
+//                 }
+//             }, 500); // Retry every 500ms
+//         } else {
+//             console.warn(`⚠️ Missing closing field in Firestore: ${closingKey}`);
+//         }
+//     });
+// }
+
+function updateBranchAddress() {
+    const branchSelection = document.getElementById("branchSelection").value;
+    const addressField = document.getElementById("branchAddress");
+
+    // Define branch addresses with separate lines
+    const branchAddresses = {
+        branch1: {
+            name: "Red Star Gas Station",
+            location: "(Brgy Bayaoas, Urdaneta, Pangasinan)"
+        },
+        branch2: {
+            name: "MVS Gas Station",
+            location: "(Brgy Bantog, Asingan, Pangasinan)"
+        },
+        branch3: {
+            name: "Star 888 Gas Station",
+            location: "(Concepcion, Tarlac)"
+        }
+    };
+
+    // Update address dynamically based on selection
+    if (branchSelection in branchAddresses) {
+        addressField.innerHTML = `
+            <span style="display:block; font-weight: bold;">${branchAddresses[branchSelection].name}</span>
+            <span style="display:block; font-size: 14px; color: #555;">${branchAddresses[branchSelection].location}</span>
+        `;
+    } else {
+        addressField.innerHTML = "";
+    }
+}
+</script>
+
+<script>
+    function resetPumpOpenings() {
+        console.log("🔄 Resetting pump opening values...");
+
+        const openingFields = [
+            "premium1Opening", "premium2Opening",
+            "unleaded1Opening", "unleaded2Opening",
+            "diesel1Opening", "diesel2Opening"
+        ];
+
+        openingFields.forEach(fieldName => {
+            const inputField = document.querySelector(`input[name="${fieldName}"]`);
+            if (inputField) {
+                inputField.value = ""; // Reset to empty before fetching new values
+            }
+        });
+
+        console.log("✅ Pump opening values reset.");
+    }
+
+// Function to reset pump prices
+function resetPumpPrices() {
+    console.log("🔄 Resetting pump price values...");
+
+    // List of pump price fields to reset
+    const pumpPriceFields = [
+        "premium1Price", "premium2Price",
+        "unleaded1Price", "unleaded2Price",
+        "diesel1Price", "diesel2Price"
+    ];
+
+    // Reset each price field to empty or 0
+    pumpPriceFields.forEach(fieldId => {
+        const inputField = document.getElementById(fieldId);
+        if (inputField) {
+            inputField.value = ""; // Clear the value
+            console.log(`✅ Reset ${fieldId}`);
+        }
+    });
+
+    console.log("✅ All pump prices reset.");
+}
+
+    async function fetchPreviousPumpReadings() {
+        console.log("🔥 Fetching previous pump readings...");
+
+        const firestore = firebase.firestore();
+        const branchSelection = document.getElementById("branchSelection").value;
+
+        if (!branchSelection) {
+            console.log("🚨 No branch selected. Skipping fetch.");
+            return;
+        }
+
+        console.log(`🔍 Searching for reports for branch: ${branchSelection}`);
+
+        try {
+            const querySnapshot = await firestore
+                .collection("gasStationReports")
+                .where("branchSelection", "==", branchSelection)
+                .orderBy("reportNumber", "desc")
+                .limit(1)
+                .get();
+
+            if (querySnapshot.empty) {
+                console.warn("❌ No previous reports found for this branch.");
+                return;
+            }
+
+            const lastReport = querySnapshot.docs[0].data();
+            console.log("📄 Last report fetched:", lastReport);
+
+            const pumpMappings = {
+                "premium1Closing": "premium1Opening",
+                "premium2Closing": "premium2Opening",
+                "unleaded1Closing": "unleaded1Opening",
+                "unleaded2Closing": "unleaded2Opening",
+                "diesel1Closing": "diesel1Opening",
+                "diesel2Closing": "diesel2Opening"
+            };
+
+            Object.keys(pumpMappings).forEach(closingKey => {
+                const openingKey = pumpMappings[closingKey];
+
+                if (lastReport.hasOwnProperty(closingKey)) {
+                    const inputField = document.querySelector(`input[name="${openingKey}"]`);
+
+                    if (inputField) {
+                        inputField.value = lastReport[closingKey];
+                        console.log(`✅ Updated ${openingKey} to ${lastReport[closingKey]}`);
+                    } else {
+                        console.warn(`⚠️ Input field not found in DOM: ${openingKey}`);
+                    }
+                } else {
+                    console.warn(`⚠️ Missing field in Firestore: ${closingKey}`);
+                }
+            });
+
+            console.log("🎯 Pump openings updated successfully!");
+        } catch (error) {
+            console.error("❌ Error fetching previous pump readings:", error);
+        }
+    }
+
+    async function fetchPreviousPumpPrices() {
+        console.log("🔥 Fetching previous pump prices...");
+
+        const firestore = firebase.firestore();
+        const branchSelection = document.getElementById("branchSelection").value;
+
+        if (!branchSelection) {
+            console.log("🚨 No branch selected. Skipping fetch.");
+            return;
+        }
+
+        console.log(`🔍 Searching for pump prices for branch: ${branchSelection}`);
+
+        try {
+            const querySnapshot = await firestore
+                .collection("gasStationReports")
+                .where("branchSelection", "==", branchSelection)
+                .orderBy("reportNumber", "desc")
+                .limit(1)
+                .get();
+
+            if (querySnapshot.empty) {
+                console.warn("❌ No previous pump prices found for this branch.");
+                return;
+            }
+
+            const lastReport = querySnapshot.docs[0].data();
+            console.log("📄 Last report fetched:", lastReport);
+
+            document.getElementById("premium1Price").value = lastReport.premium1Price || 0;
+            document.getElementById("unleaded1Price").value = lastReport.unleaded1Price || 0;
+            document.getElementById("diesel1Price").value = lastReport.diesel1Price || 0;
+
+            console.log("🎯 Pump prices updated successfully!");
+        } catch (error) {
+            console.error("❌ Error fetching previous pump prices:", error);
+        }
+    }
+
+    function handleBranchChange() {
+        console.log("🔥 Branch changed, resetting previous values...");
+
+		resetFormFields();
+		resetPumpOpenings();
+        resetPumpPrices();
+        updateBranchAddress();
+        fetchPreviousPumpReadings();
+        fetchPreviousPumpPrices();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("✅ DOM fully loaded.");
+
+        const branchDropdown = document.getElementById("branchSelection");
+        if (branchDropdown) {
+            branchDropdown.addEventListener("change", handleBranchChange);
+            console.log("✅ Branch dropdown event listener attached.");
+        } else {
+            console.error("❌ Branch dropdown not found!");
+        }
+    });
+    
+function resetFormFields() {
+    console.log("🔄 Resetting all form fields (except branch selection)...");
+
+    document.querySelectorAll("#gasStationForm input, #gasStationForm select").forEach(field => {
+        if (field.id === "branchSelection" || field.id === "reportNumber") {
+            // ❌ Skip resetting branch selection and report number
+            return;
+        }
+
+        if (field.type === "text" || field.type === "number" || field.type === "date") {
+            field.value = ""; // ✅ Clear input fields
+        } else if (field.type === "select-one") {
+            field.selectedIndex = 0; // ✅ Reset dropdowns
+        }
+    });
+
+    console.log("✅ All form fields reset (except branch selection).");
 }
 </script>
 </body>
