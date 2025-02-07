@@ -431,9 +431,14 @@ table td:first-child { /* First column cells */
 <div id="navTabs" style="text-align: center; margin-bottom: 20px;">
     <a href="https://redstargas-ec7ed.web.app/" style="padding: 10px 20px; text-decoration: none; font-weight: bold; 
         border-bottom: 3px solid #e74c3c; color: white; background: #e74c3c;">DAILY</a>
+        
+    <a href="weeklyreport.html" style="padding: 10px 20px; text-decoration: none; font-weight: bold; 
+        border-bottom: 3px solid #bdc3c7; color: #2c3e50; background: #bdc3c7;">WEEKLY</a>
     
+<!-- 
     <a href="https://redstar-27bfa.web.app/" style="padding: 10px 20px; text-decoration: none; font-weight: bold; 
         border-bottom: 3px solid #bdc3c7; color: #2c3e50; background: #bdc3c7;">WEEKLY</a>
+ -->
 </div>
 
                     <!-- Branch Selection: Now aligned properly -->
@@ -1239,7 +1244,7 @@ function addPurchaseOrderRow() {
     purchaseOrderTableBody.appendChild(newRow);
     
     // ✅ Update the new dropdown with the latest product list
-    populateProductDropdown();
+//     populateProductDropdown();
 
     // Apply restrictions to newly added Discount fields if the user is not admin
     if (currentUserRole === "user") {
@@ -1247,27 +1252,27 @@ function addPurchaseOrderRow() {
     }
 }
     
-function populateProductDropdown() {
-    console.log("🔄 Populating Product Dropdown from Pump Section...");
-
-    let productSet = new Set();
-
-    document.querySelectorAll('[name$="Price"]').forEach(input => {
-        let productName = input.name.replace(/[0-9]/g, '').replace("Price", "").trim(); // Remove numbers
-        if (productName) productSet.add(productName);
-    });
-
-    let productList = Array.from(productSet);
-
-    document.querySelectorAll('[name="poProduct[]"]').forEach(select => {
-        select.innerHTML = '<option value="" disabled selected>Select Product</option>'; // Reset options
-        productList.forEach(product => {
-            select.innerHTML += `<option value="${product}">${product}</option>`;
-        });
-    });
-
-    console.log("✅ Product Dropdown Updated Successfully");
-}
+// function populateProductDropdown() {
+//     console.log("🔄 Populating Product Dropdown from Pump Section...");
+// 
+//     let productSet = new Set();
+// 
+//     document.querySelectorAll('[name$="Price"]').forEach(input => {
+//         let productName = input.name.replace(/[0-9]/g, '').replace("Price", "").trim(); // Remove numbers
+//         if (productName) productSet.add(productName);
+//     });
+// 
+//     let productList = Array.from(productSet);
+// 
+//     document.querySelectorAll('[name="poProduct[]"]').forEach(select => {
+//         select.innerHTML = '<option value="" disabled selected>Select Product</option>'; // Reset options
+//         productList.forEach(product => {
+//             select.innerHTML += `<option value="${product}">${product}</option>`;
+//         });
+//     });
+// 
+//     console.log("✅ Product Dropdown Updated Successfully");
+// }
 
 // function updatePurchaseOrderTotal(inputElement) {
 //         // Get the row containing the changed input
@@ -1558,7 +1563,6 @@ function updateShortOver() {
 }
 </script>
 
-<!-- Add report number -->
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         console.log("DOM fully loaded and parsed.");
@@ -1637,6 +1641,7 @@ reportData.branch = document.getElementById("branchSelection").value;
         }
     });
 </script>
+
 
 <!-- 
     <script>
@@ -2006,6 +2011,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function logoutUser() {
+    console.log("🔄 Logging out and resetting form...");
+
     // Clear current user session
     currentUserRole = null;
 
@@ -2017,7 +2024,36 @@ function logoutUser() {
     document.getElementById("username").value = "";
     document.getElementById("password").value = "";
 
-    console.log("User logged out successfully.");
+    // ✅ Reset all form fields to blank
+    document.querySelectorAll("#gasStationForm input, #gasStationForm select").forEach(field => {
+        if (field.id === "branchSelection") {
+            field.selectedIndex = 0; // Reset branch dropdown
+        } else if (field.type === "text" || field.type === "number" || field.type === "date") {
+            field.value = ""; // Clear input fields
+        } else if (field.type === "select-one") {
+            field.selectedIndex = 0; // Reset dropdowns
+        }
+    });
+
+    // ✅ Reset Report Number Text
+    document.getElementById("reportNumber").innerText = "REPORT NUMBER: Loading...";
+
+    // ✅ Clear dynamically added rows in PO, Expenses, Safe Drop, and Discounts
+    document.getElementById("purchaseOrderTable").getElementsByTagName("tbody")[0].innerHTML = "";
+    document.getElementById("expensesTable").getElementsByTagName("tbody")[0].innerHTML = "";
+    document.getElementById("safeDropTable").getElementsByTagName("tbody")[0].innerHTML = "";
+    document.getElementById("discountTable").getElementsByTagName("tbody")[0].innerHTML = "";
+
+    // ✅ Reset branch selection & pump prices
+    document.getElementById("branchSelection").selectedIndex = 0;
+    resetPumpPrices(); // ✅ Reset pump prices after logout
+
+    console.log("✅ All form fields, dropdowns, and dynamic rows reset.");
+
+    // ✅ Optional: Reload the page to ensure everything resets
+    setTimeout(() => {
+        location.reload();
+    }, 500);
 }
 // 
 // function updatePumpReadingsFromReport(lastReport) {
