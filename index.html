@@ -431,9 +431,14 @@ table td:first-child { /* First column cells */
 <div id="navTabs" style="text-align: center; margin-bottom: 20px;">
     <a href="https://redstargas-ec7ed.web.app/" style="padding: 10px 20px; text-decoration: none; font-weight: bold; 
         border-bottom: 3px solid #e74c3c; color: white; background: #e74c3c;">DAILY</a>
+        
+    <a href="weeklyreport.html" style="padding: 10px 20px; text-decoration: none; font-weight: bold; 
+        border-bottom: 3px solid #bdc3c7; color: #2c3e50; background: #bdc3c7;">WEEKLY</a>
     
+<!-- 
     <a href="https://redstar-27bfa.web.app/" style="padding: 10px 20px; text-decoration: none; font-weight: bold; 
         border-bottom: 3px solid #bdc3c7; color: #2c3e50; background: #bdc3c7;">WEEKLY</a>
+ -->
 </div>
 
                     <!-- Branch Selection: Now aligned properly -->
@@ -1106,52 +1111,112 @@ function updateTotalDiscount(e) {
 <button type="button" onclick="addPurchaseOrderRow()" style="margin-top:10px;padding:8px 16px;font-size:14px">+ Add Purchase Order</button>
 
 <script>
-// // Store latest prices in a global variable
-// let previousPrices = { premium: 0, unleaded: 0, diesel: 0 };
-// 
-// // Fetch latest pump prices from Firebase
-// async function fetchPreviousPrices() {
-//     try {
-//         const querySnapshot = await firebase.firestore()
-//             .collection("gasStationReports")
-//             .orderBy("reportNumber", "desc")
-//             .limit(1)
-//             .get();
-// 
-//         if (!querySnapshot.empty) {
-//             const lastReport = querySnapshot.docs[0].data();
-//             previousPrices.premium = parseFloat(lastReport.premium1Price) || 0;
-//             previousPrices.unleaded = parseFloat(lastReport.unleaded1Price) || 0;
-//             previousPrices.diesel = parseFloat(lastReport.diesel1Price) || 0;
-//         }
-// 
-//         console.log("Previous Prices Loaded:", previousPrices);
-//     } catch (error) {
-//         console.error("Error fetching previous prices:", error);
-//     }
-// }
+
+function updatePreviousPricesFromPumpSection() {
+    console.log("🔄 Updating previousPrices from Pump Section...");
+
+    previousPrices = {}; // Reset previousPrices
+
+    document.querySelectorAll('[name$="Price"]').forEach(input => {
+        let productName = input.name.replace(/[0-9]/g, '').replace("Price", "").trim(); // Remove numbers
+        let price = parseFloat(input.value) || 0;
+
+        if (productName) {
+            previousPrices[productName] = price;
+        }
+    });
+
+    console.log("📌 Updated previousPrices:", previousPrices);
+}
+
+
+// Store latest prices in a global variable
+
+
+let previousPrices = { premium: 0, unleaded: 0, diesel: 0 };
+// Fetch latest pump prices from Firebase
+async function fetchPreviousPumpPrices() {
+    console.log("🔥 Fetching previous pump prices...");
+
+    const firestore = firebase.firestore();
+    const branchSelection = document.getElementById("branchSelection").value;
+
+    if (!branchSelection) {
+        console.log("🚨 No branch selected. Skipping fetch.");
+        return;
+    }
+
+    console.log(`🔍 Searching for pump prices for branch: ${branchSelection}`);
+
+    try {
+        const querySnapshot = await firestore
+            .collection("gasStationReports")
+            .where("branchSelection", "==", branchSelection)
+            .orderBy("reportNumber", "desc")
+            .limit(1)
+            .get();
+
+        if (querySnapshot.empty) {
+            console.warn("❌ No previous pump prices found for this branch.");
+            return;
+        }
+
+        const lastReport = querySnapshot.docs[0].data();
+        console.log("📄 Last report fetched:", lastReport);
+
+        // ✅ Populate previousPrices before updating PO prices
+        previousPrices = {
+            Premium: parseFloat(lastReport.premium1Price) || 0,
+            Unleaded: parseFloat(lastReport.unleaded1Price) || 0,
+            Diesel: parseFloat(lastReport.diesel1Price) || 0
+        };
+
+        console.log("✅ Pump prices updated:", previousPrices);
+
+    } catch (error) {
+        console.error("❌ Error fetching previous pump prices:", error);
+    }
+}
+
 
 // Update price when product is selected
 function updatePOPrice(selectElement) {
     const row = selectElement.closest("tr");
     let priceField = row.querySelector('input[name="poPrice[]"]');
 
-    switch (selectElement.value) {
+    // ✅ Get the selected product
+    let selectedProduct = selectElement.value;
+
+    // ✅ Get the corresponding pump price field
+    let pumpPriceFieldId;
+    switch (selectedProduct) {
         case "Premium":
-            priceField.value = previousPrices.premium;
+            pumpPriceFieldId = "premium1Price";
             break;
         case "Unleaded":
-            priceField.value = previousPrices.unleaded;
+            pumpPriceFieldId = "unleaded1Price";
             break;
         case "Diesel":
-            priceField.value = previousPrices.diesel;
+            pumpPriceFieldId = "diesel1Price";
             break;
         default:
-            priceField.value = "";
+            priceField.value = ""; // ✅ Clear price if no valid selection
+            return;
+    }
+
+    // ✅ Get the price from the pump section
+    let pumpPriceField = document.getElementById(pumpPriceFieldId);
+    if (!pumpPriceField || !pumpPriceField.value) {
+        console.warn(`🚨 Pump price not found for ${selectedProduct}. Keeping price as 0.`);
+        priceField.value = "0.00"; // ✅ Set default if no price is available
+    } else {
+        priceField.value = parseFloat(pumpPriceField.value).toFixed(2);
+        console.log(`✅ Updated PO Price for ${selectedProduct}: ${priceField.value}`);
     }
 
     updatePurchaseOrderTotal(row.querySelector('input[name="poLiters[]"]'));
 }
+
 
 // Add new purchase order row dynamically
 function addPurchaseOrderRow() {
@@ -1177,6 +1242,9 @@ function addPurchaseOrderRow() {
     `;
 
     purchaseOrderTableBody.appendChild(newRow);
+    
+    // ✅ Update the new dropdown with the latest product list
+//     populateProductDropdown();
 
     // Apply restrictions to newly added Discount fields if the user is not admin
     if (currentUserRole === "user") {
@@ -1184,6 +1252,27 @@ function addPurchaseOrderRow() {
     }
 }
     
+// function populateProductDropdown() {
+//     console.log("🔄 Populating Product Dropdown from Pump Section...");
+// 
+//     let productSet = new Set();
+// 
+//     document.querySelectorAll('[name$="Price"]').forEach(input => {
+//         let productName = input.name.replace(/[0-9]/g, '').replace("Price", "").trim(); // Remove numbers
+//         if (productName) productSet.add(productName);
+//     });
+// 
+//     let productList = Array.from(productSet);
+// 
+//     document.querySelectorAll('[name="poProduct[]"]').forEach(select => {
+//         select.innerHTML = '<option value="" disabled selected>Select Product</option>'; // Reset options
+//         productList.forEach(product => {
+//             select.innerHTML += `<option value="${product}">${product}</option>`;
+//         });
+//     });
+// 
+//     console.log("✅ Product Dropdown Updated Successfully");
+// }
 
 // function updatePurchaseOrderTotal(inputElement) {
 //         // Get the row containing the changed input
@@ -1474,8 +1563,8 @@ function updateShortOver() {
 }
 </script>
 
-<!-- Add report number -->
-<script>
+<!-- 
+Add report number<script>
     document.addEventListener("DOMContentLoaded", async () => {
         console.log("DOM fully loaded and parsed.");
 
@@ -1553,6 +1642,7 @@ reportData.branch = document.getElementById("branchSelection").value;
         }
     });
 </script>
+ -->
 
 <!-- 
     <script>
@@ -1837,45 +1927,7 @@ function updateTotalExpenses() {
 </script>
 
 <script>
-async function fetchPreviousPumpPrices() {
-    console.log("🔥 Fetching previous pump prices...");
 
-    const firestore = firebase.firestore();
-    const branchSelection = document.getElementById("branchSelection").value;
-
-    if (!branchSelection) {
-        console.log("🚨 No branch selected. Skipping fetch.");
-        return;
-    }
-
-    console.log(`🔍 Searching for pump prices for branch: ${branchSelection}`);
-
-    try {
-        const querySnapshot = await firestore
-            .collection("gasStationReports")
-            .where("branchSelection", "==", branchSelection)  // ✅ Fetch only for selected branch
-            .orderBy("reportNumber", "desc")  // ✅ Get latest report for that branch
-            .limit(1)
-            .get();
-
-        if (querySnapshot.empty) {
-            console.warn("❌ No previous pump prices found for this branch.");
-            return;
-        }
-
-        const lastReport = querySnapshot.docs[0].data();
-        console.log("📄 Last report fetched:", lastReport);
-
-        // ✅ Update Pump Prices
-        document.getElementById("premium1Price").value = lastReport.premium1Price || 0;
-        document.getElementById("unleaded1Price").value = lastReport.unleaded1Price || 0;
-        document.getElementById("diesel1Price").value = lastReport.diesel1Price || 0;
-
-        console.log("🎯 Pump prices updated successfully!");
-    } catch (error) {
-        console.error("❌ Error fetching previous pump prices:", error);
-    }
-}
 // let previousPrices = {
 //     premium: 0,
 //     unleaded: 0,
@@ -1954,9 +2006,14 @@ async function fetchPreviousPumpPrices() {
 // Execute the function after Firebase is initialized
 document.addEventListener("DOMContentLoaded", () => {
     preFillPumpPrices();
+    fetchPreviousPumpPrices();
+    console.log("🚀 Page Loaded, Fetching Prices from Pump Section...");
+    updatePreviousPricesFromPumpSection(); // ✅ Fetch prices when the page loads
 });
 
 function logoutUser() {
+    console.log("🔄 Logging out and resetting form...");
+
     // Clear current user session
     currentUserRole = null;
 
@@ -1968,7 +2025,36 @@ function logoutUser() {
     document.getElementById("username").value = "";
     document.getElementById("password").value = "";
 
-    console.log("User logged out successfully.");
+    // ✅ Reset all form fields to blank
+    document.querySelectorAll("#gasStationForm input, #gasStationForm select").forEach(field => {
+        if (field.id === "branchSelection") {
+            field.selectedIndex = 0; // Reset branch dropdown
+        } else if (field.type === "text" || field.type === "number" || field.type === "date") {
+            field.value = ""; // Clear input fields
+        } else if (field.type === "select-one") {
+            field.selectedIndex = 0; // Reset dropdowns
+        }
+    });
+
+    // ✅ Reset Report Number Text
+    document.getElementById("reportNumber").innerText = "REPORT NUMBER: Loading...";
+
+    // ✅ Clear dynamically added rows in PO, Expenses, Safe Drop, and Discounts
+    document.getElementById("purchaseOrderTable").getElementsByTagName("tbody")[0].innerHTML = "";
+    document.getElementById("expensesTable").getElementsByTagName("tbody")[0].innerHTML = "";
+    document.getElementById("safeDropTable").getElementsByTagName("tbody")[0].innerHTML = "";
+    document.getElementById("discountTable").getElementsByTagName("tbody")[0].innerHTML = "";
+
+    // ✅ Reset branch selection & pump prices
+    document.getElementById("branchSelection").selectedIndex = 0;
+    resetPumpPrices(); // ✅ Reset pump prices after logout
+
+    console.log("✅ All form fields, dropdowns, and dynamic rows reset.");
+
+    // ✅ Optional: Reload the page to ensure everything resets
+    setTimeout(() => {
+        location.reload();
+    }, 500);
 }
 // 
 // function updatePumpReadingsFromReport(lastReport) {
@@ -2177,16 +2263,33 @@ function resetPumpPrices() {
         }
     }
 
-    function handleBranchChange() {
-        console.log("🔥 Branch changed, resetting previous values...");
+ //    function handleBranchChange() {
+//         console.log("🔥 Branch changed, resetting previous values...");
+// 
+// 		resetFormFields();
+// 		resetPumpOpenings();
+//         resetPumpPrices();
+//         updateBranchAddress();
+//         fetchPreviousPumpReadings().then(() => {
+//         updatePreviousPricesFromPumpSection(); // ✅ Update prices after fetching pump readings
+//         updateAllPOPrices(); // ✅ Update PO Prices only after fetching pump data
+//     	});
+//         fetchPreviousPumpPrices();
+//     }
 
-		resetFormFields();
-		resetPumpOpenings();
-        resetPumpPrices();
-        updateBranchAddress();
-        fetchPreviousPumpReadings();
-        fetchPreviousPumpPrices();
-    }
+async function handleBranchChange() {
+    console.log("🔥 Branch changed, resetting previous values...");
+
+    resetFormFields();
+    resetPumpOpenings();
+    resetPumpPrices();
+    updateBranchAddress();
+
+    await fetchPreviousPumpPrices();
+    await fetchPreviousPumpReadings();
+
+    updateAllPOPrices(); // ✅ Now updates PO prices only if products are selected
+}
 
     document.addEventListener("DOMContentLoaded", () => {
         console.log("✅ DOM fully loaded.");
@@ -2218,6 +2321,20 @@ function resetFormFields() {
 
     console.log("✅ All form fields reset (except branch selection).");
 }
+
+function updateAllPOPrices() {
+    console.log("🔄 Ensuring PO prices only update when a product is selected...");
+
+    document.querySelectorAll('[name="poProduct[]"]').forEach(select => {
+        if (select.value) {
+            updatePOPrice(select); // ✅ Only update if a product is selected
+        }
+    });
+
+    console.log("✅ PO prices updated where products were selected.");
+}
+
 </script>
+<script src="firebase-config.js"></script>
 </body>
 </html>
